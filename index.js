@@ -1,5 +1,5 @@
-var keyWidth = 90;
-var keyboardHeight = 400;
+var keyWidth = 65;
+var keyboardHeight = 200;
 var numOfWhiteKeys = 17;
 var numOfKeys = 29;
 var envo = [];
