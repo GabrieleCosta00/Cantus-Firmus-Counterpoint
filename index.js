@@ -1,6 +1,7 @@
-var space = 90;
-var numOfWhiteKeys = 10;
-var numOfKeys = 17;
+var keyWidth = 90;
+var keyboardHeight = 400;
+var numOfWhiteKeys = 17;
+var numOfKeys = 29;
 var envo = [];
 var osc = [];
 var rSide = [];
@@ -8,10 +9,10 @@ var black = [];
 var mid = [];
 var lSide = [];
 
-var rKee = ['A', null, null, 'F', null, null, null, 'K', null, null];
-var blKee = ['W', 'E', null, 'T', 'Y', 'U', null, 'O', 'P', null, null];
-var midKee = [null, 'S', null, null, 'G', 'H', null, null, 'L', null];
-var lKee = [null, null, 'D', null, null, null, "J", null, null, ';'];
+var rKee = [  'A',  null, null, 'F',  null, null, null, 'K',  null, null, '1',  null, null, null, '8',  null,    null];
+var blKee = [ 'W',  'E',  null, 'T',  'Y',  'U',  null, 'O',  'P',  null, '2',  '4',  '6',  null, '9',  '4n',  null];
+var midKee = [null, 'S',  null, null, 'G',  'H',  null, null, 'L',  null, null, '3',  '5',  null, null, '0',     null];
+var lKee = [  null, null, 'D',  null, null, null, "J",  null, null, '1n',  null, null, null, "7",  null, null,    '2n'];
 
 function RSideKey(start, space, kee) {
     this.x = start * space;
@@ -23,6 +24,7 @@ function RSideKey(start, space, kee) {
     this.display = function() {
         fill(this.col);
         beginShape();
+        vertex(this.x + (this.keyWidth * 0.667), 0);
         vertex(this.x, 0);
         vertex(this.x, height);
         vertex(this.x + this.keyWidth, height);
@@ -79,6 +81,7 @@ function MidKey(start, space, kee) {
     this.display = function() {
         fill(this.col);
         beginShape();
+        vertex(this.x + (this.keyWidth * 0.667), 0);
         vertex(this.x + (this.keyWidth * 0.333), 0);
         vertex(this.x + (this.keyWidth * 0.333), height * 0.6);
         vertex(this.x, height * 0.6);
@@ -113,6 +116,7 @@ function LSideKey(start, space, kee) {
     this.display = function() {
         fill(this.col);
         beginShape();
+        vertex(this.x + this.keyWidth, 0);
         vertex(this.x + (this.keyWidth * 0.333), 0);
         vertex(this.x + (this.keyWidth * 0.333), height * 0.6);
         vertex(this.x, height * 0.6);
@@ -137,7 +141,9 @@ function LSideKey(start, space, kee) {
 
 
 function setup() {
-    createCanvas(space * numOfWhiteKeys, 500);
+    var cnv = createCanvas(keyWidth * numOfWhiteKeys, keyboardHeight);
+
+    cnv.position((windowWidth / 2) - (keyWidth * numOfWhiteKeys / 2), (windowHeight - keyboardHeight - 5));
 
     for (var j = 0; j < numOfKeys; j++) {
         envo.push(new p5.Env());
@@ -148,15 +154,15 @@ function setup() {
     }
 
     for (var i = 0; i < numOfWhiteKeys; i++) {
-        rSide.push(new RSideKey(i, space, rKee[i]));
-        black.push(new BlackKey(i + 0.667, space, blKee[i]));
-        mid.push(new MidKey(i, space, midKee[i]));
-        lSide.push(new LSideKey(i, space, lKee[i]));
+        rSide.push(new RSideKey(i, keyWidth, rKee[i]));
+        black.push(new BlackKey(i + 0.667, keyWidth, blKee[i]));
+        mid.push(new MidKey(i, keyWidth, midKee[i]));
+        lSide.push(new LSideKey(i, keyWidth, lKee[i]));
     }
 }
 
 function draw() {
-    background(255);
+    background(50);
     for (var i = 0; i < rSide.length; i++) {
         if (i%7 === 0 || i%7 === 3) {
             rSide[i].display();
@@ -175,7 +181,7 @@ function draw() {
 
 
 function keyPressed() {
-    var root = 60; // Middle C
+    var root = 48; // An octave below middle C (60)
     if (keyCode === 65) {
         rSide[0].red();
         osc[0].start();
@@ -256,11 +262,71 @@ function keyPressed() {
         osc[15].start();
         osc[15].freq(midiToFreq(root + 15));
         envo[15].play();
-    } else if (keyCode === 186) {
+    } else if (keyCode === 97) {                // 1 NumPad -> Mi
         lSide[9].red();
         osc[16].start();
         osc[16].freq(midiToFreq(root + 16));
         envo[16].play();
+    } else if (keyCode === 49) {                // 1 -> Fa
+        rSide[10].red();
+        osc[17].start();
+        osc[17].freq(midiToFreq(root + 17));
+        envo[17].play();
+    } else if (keyCode === 50) {                // 2 -> Fa#
+        black[10].red();
+        osc[18].start();
+        osc[18].freq(midiToFreq(root + 18));
+        envo[18].play();
+    } else if (keyCode === 51) {                // 3 -> Sol
+        mid[11].red();
+        osc[19].start();
+        osc[19].freq(midiToFreq(root + 19));
+        envo[19].play();
+    } else if (keyCode === 52) {                // 4 -> Sol#
+        black[11].red();
+        osc[20].start();
+        osc[20].freq(midiToFreq(root + 20));
+        envo[20].play();
+    } else if (keyCode === 53) {                // 5 -> La
+        mid[12].red();
+        osc[21].start();
+        osc[21].freq(midiToFreq(root + 21));
+        envo[21].play();
+    } else if (keyCode === 54) {                // 6 -> La#
+        black[12].red();
+        osc[22].start();
+        osc[22].freq(midiToFreq(root + 22));
+        envo[22].play();
+    } else if (keyCode === 55) {                // 7 -> Si
+        lSide[13].red();
+        osc[23].start();
+        osc[23].freq(midiToFreq(root + 23));
+        envo[23].play();
+    } else if (keyCode === 56) {                // 8 -> Do
+        rSide[14].red();
+        osc[24].start();
+        osc[24].freq(midiToFreq(root + 24));
+        envo[24].play();
+    } else if (keyCode === 57) {                // 9 -> Do#
+        black[14].red();
+        osc[25].start();
+        osc[25].freq(midiToFreq(root + 25));
+        envo[25].play();
+    } else if (keyCode === 48) {                // 0 -> Re
+        mid[15].red();
+        osc[26].start();
+        osc[26].freq(midiToFreq(root + 26));
+        envo[26].play();
+    } else if (keyCode === 100) {                // 4 NumPad -> Re#
+        black[15].red();
+        osc[27].start();
+        osc[27].freq(midiToFreq(root + 27));
+        envo[27].play();
+    } else if (keyCode === 98) {                // 2 NumPad -> Mi
+        lSide[16].red();
+        osc[28].start();
+        osc[28].freq(midiToFreq(root + 28));
+        envo[28].play();
     }
 }
 
