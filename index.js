@@ -15,8 +15,11 @@ var blKee = [ 'W',  'E',  null, 'T',  'Y',  'U',  null, 'O',  'P',  null, '2',  
 var midKee = [null, 'S',  null, null, 'G',  'H',  null, null, 'L',  null, null, '3',  '5',  null, null, '0',     null];
 var lKee = [  null, null, 'D',  null, null, null, "J",  null, null, '1n',  null, null, null, "7",  null, null,    '2n'];
 
-function RSideKey(start, space, kee) {
+let keyBoard;
+
+function LSideKey(start, space, kee) {
     this.x = start * space;
+    this.y = (windowHeight - keyboardHeight - 5);
     this.keyWidth = space;
     this.col = color(255);
     this.kee = kee;
@@ -25,18 +28,18 @@ function RSideKey(start, space, kee) {
     this.display = function() {
         fill(this.col);
         beginShape();
-        vertex(this.x + (this.keyWidth * 0.667), 0);
-        vertex(this.x, 0);
-        vertex(this.x, height);
-        vertex(this.x + this.keyWidth, height);
-        vertex(this.x + this.keyWidth, height * 0.6)
-        vertex(this.x + (this.keyWidth * 0.667), height * 0.6)
-        vertex(this.x + (this.keyWidth * 0.667), 0);
+        vertex(this.x + (this.keyWidth * 0.667), this.y);
+        vertex(this.x, this.y);
+        vertex(this.x, keyboardHeight + this.y);
+        vertex(this.x + this.keyWidth, keyboardHeight + this.y);
+        vertex(this.x + this.keyWidth, keyboardHeight * 0.6 + this.y)
+        vertex(this.x + (this.keyWidth * 0.667), keyboardHeight * 0.6 + this.y)
+        vertex(this.x + (this.keyWidth * 0.667), this.y);
         endShape();
 
         fill(0, 0, 230);
         textSize(this.size);
-        text(this.kee, this.x + (this.keyWidth *0.4), height - this.size);
+        text(this.kee, this.x + (this.keyWidth *0.4), keyboardHeight + this.y - this.size);
     }
 
     this.red = function() {
@@ -50,6 +53,7 @@ function RSideKey(start, space, kee) {
 
 function BlackKey(start, space, kee) {
     this.x = start * space;
+    this.y = (windowHeight - keyboardHeight - 5);
     this.keyWidth = space;
     this.col = color(0);
     this.kee = kee;
@@ -57,10 +61,10 @@ function BlackKey(start, space, kee) {
 
     this.display = function() {
         fill(this.col);
-        rect(this.x, 0, (this.keyWidth * 0.667), height * 0.6);
+        rect(this.x, this.y, (this.keyWidth * 0.667), keyboardHeight * 0.6);
         fill(255, 0, 230);
         textSize(this.size);
-        text(this.kee, this.x + (this.keyWidth * 0.2), (height * 0.6) - this.size);
+        text(this.kee, this.x + (this.keyWidth * 0.2), this.y + (keyboardHeight * 0.6) - this.size);
     }
 
     this.red = function() {
@@ -74,6 +78,7 @@ function BlackKey(start, space, kee) {
 
 function MidKey(start, space, kee) {
     this.x = start * space;
+    this.y = (windowHeight - keyboardHeight - 5);
     this.keyWidth = space;
     this.col = color(255);
     this.kee = kee;
@@ -82,20 +87,20 @@ function MidKey(start, space, kee) {
     this.display = function() {
         fill(this.col);
         beginShape();
-        vertex(this.x + (this.keyWidth * 0.667), 0);
-        vertex(this.x + (this.keyWidth * 0.333), 0);
-        vertex(this.x + (this.keyWidth * 0.333), height * 0.6);
-        vertex(this.x, height * 0.6);
-        vertex(this.x, height);
-        vertex(this.x + this.keyWidth, height);
-        vertex(this.x + this.keyWidth, height * 0.6);
-        vertex(this.x + (this.keyWidth * 0.667), height * 0.6);
-        vertex(this.x + (this.keyWidth * 0.667), 0);
+        vertex(this.x + (this.keyWidth * 0.667), this.y);
+        vertex(this.x + (this.keyWidth * 0.333), this.y);
+        vertex(this.x + (this.keyWidth * 0.333), keyboardHeight * 0.6 + this.y);
+        vertex(this.x, keyboardHeight * 0.6 + this.y);
+        vertex(this.x, keyboardHeight + this.y);
+        vertex(this.x + this.keyWidth, keyboardHeight + this.y);
+        vertex(this.x + this.keyWidth, keyboardHeight * 0.6 + this.y);
+        vertex(this.x + (this.keyWidth * 0.667), keyboardHeight * 0.6 + this.y);
+        vertex(this.x + (this.keyWidth * 0.667), this.y);
         endShape();
 
         fill(0, 0, 230);
         textSize(this.size);
-        text(this.kee, this.x + (this.keyWidth *0.4), height - this.size);
+        text(this.kee, this.x + (this.keyWidth *0.4), keyboardHeight - this.size + this.y);
     }
 
     this.red = function() {
@@ -107,8 +112,9 @@ function MidKey(start, space, kee) {
     }
 }
 
-function LSideKey(start, space, kee) {
+function RSideKey(start, space, kee) {
     this.x = start * space;
+    this.y = (windowHeight - keyboardHeight - 5);
     this.keyWidth = space;
     this.col = color(255);
     this.kee = kee;
@@ -117,18 +123,18 @@ function LSideKey(start, space, kee) {
     this.display = function() {
         fill(this.col);
         beginShape();
-        vertex(this.x + this.keyWidth, 0);
-        vertex(this.x + (this.keyWidth * 0.333), 0);
-        vertex(this.x + (this.keyWidth * 0.333), height * 0.6);
-        vertex(this.x, height * 0.6);
-        vertex(this.x, height);
-        vertex(this.x + this.keyWidth, height);
-        vertex(this.x + this.keyWidth, 0);
+        vertex(this.x + this.keyWidth, this.y);
+        vertex(this.x + (this.keyWidth * 0.333), this.y);
+        vertex(this.x + (this.keyWidth * 0.333), keyboardHeight * 0.6 + this.y);
+        vertex(this.x, keyboardHeight * 0.6 + this.y);
+        vertex(this.x, keyboardHeight + this.y);
+        vertex(this.x + this.keyWidth, keyboardHeight + this.y);
+        vertex(this.x + this.keyWidth, this.y);
         endShape();
 
         fill(0, 0, 230);
         textSize(this.size);
-        text(this.kee, this.x + (this.keyWidth *0.4), height - this.size);
+        text(this.kee, this.x + (this.keyWidth *0.4), keyboardHeight - this.size + this.y);
     }
 
     this.red = function() {
@@ -140,30 +146,45 @@ function LSideKey(start, space, kee) {
     }
 }
 
+// TODO: mi sono un po' incastrato perché i tasti della tastiera non sono davvero "contenuti" (vincolati) alla graphics
 
 function setup() {
-    var cnv = createCanvas(keyWidth * numOfWhiteKeys, keyboardHeight);
 
-    cnv.position((windowWidth / 2) - (keyWidth * numOfWhiteKeys / 2), (windowHeight - keyboardHeight - 5));
+    // var cnv = createCanvas(keyWidth * numOfWhiteKeys, keyboardHeight);
+
+    // cnv.position((windowWidth / 2) - (keyWidth * numOfWhiteKeys / 2), (windowHeight - keyboardHeight - 5));
+
+    var cnv = createCanvas(windowWidth, windowHeight);
+    cnv.background(200);
+    keyBoard = createGraphics(keyWidth * numOfWhiteKeys, keyboardHeight);
+
 
     for (var j = 0; j < numOfKeys; j++) {
         envo.push(new p5.Env());
-        envo[j].setADSR(0.01, 0.05, 1, 0.1);
+        envo[j].setADSR(0.01, 0.05, 1, 0.3);
         envo[j].setRange(1, 0);
         osc.push(new p5.Oscillator());
         osc[j].amp(envo[j]);
     }
 
     for (var i = 0; i < numOfWhiteKeys; i++) {
-        rSide.push(new RSideKey(i, keyWidth, rKee[i]));
+        rSide.push(new LSideKey(i, keyWidth, rKee[i]));
         black.push(new BlackKey(i + 0.667, keyWidth, blKee[i]));
         mid.push(new MidKey(i, keyWidth, midKee[i]));
-        lSide.push(new LSideKey(i, keyWidth, lKee[i]));
+        lSide.push(new RSideKey(i, keyWidth, lKee[i]));
     }
 }
 
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+    background(200);
+}
+
 function draw() {
-    background(50);
+
+    image(keyBoard, (windowWidth / 2) - (keyWidth * numOfWhiteKeys / 2), (windowHeight - keyboardHeight - 5));
+
+    keyBoard.background(50);
     for (var i = 0; i < rSide.length; i++) {
         if (i%7 === 0 || i%7 === 3) {
             rSide[i].display();
@@ -345,7 +366,7 @@ function mousePressed() { // Non funziona ancora... c'è qualcosa che non quadra
     var positionWhiteKeys = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24, 26, 28];
     var positionBlackKeys = [1, 3, 6, 8, 10, 13, 15, 18, 20, 22, 25, 27];
     if (mouseX > 0 && mouseX < (keyWidth * numOfWhiteKeys)) {
-        if ((mouseY > (0.6 * keyboardHeight)) && (mouseY < keyboardHeight))
+        if ((mouseY > ((0.6 * keyboardHeight) + (windowHeight - keyboardHeight - 5))) && (mouseY < (keyboardHeight + (windowHeight - keyboardHeight - 5))))
         {
             // solo tasti bianchi
             n = Math.floor(mouseX / keyWidth);
@@ -353,7 +374,7 @@ function mousePressed() { // Non funziona ancora... c'è qualcosa che non quadra
             osc[positionWhiteKeys[n]].freq(midiToFreq(root + positionWhiteKeys[n]));
             envo[positionWhiteKeys[n]].play();
         }
-        if ((mouseY <= (0.6 * keyboardHeight)) && (mouseY > 0))
+        if ((mouseY <= ((0.6 * keyboardHeight) + (windowHeight - keyboardHeight - 5))) && (mouseY > (windowHeight - keyboardHeight - 5)))
         {
             // tasti neri e bianchi
             n = Math.floor((mouseX + (0.667 * keyWidth)) / keyWidth) - 1; // perché con -1 sembra che almeno l'if successivo funzioni?!
