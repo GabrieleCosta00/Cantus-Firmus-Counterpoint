@@ -8,6 +8,7 @@ var rSide = [];
 var black = [];
 var mid = [];
 var lSide = [];
+let n;
 
 var rKee = [  'A',  null, null, 'F',  null, null, null, 'K',  null, null, '1',  null, null, null, '8',  null,    null];
 var blKee = [ 'W',  'E',  null, 'T',  'Y',  'U',  null, 'O',  'P',  null, '2',  '4',  '6',  null, '9',  '4n',  null];
@@ -331,6 +332,60 @@ function keyPressed() {
 }
 
 function keyReleased() {
+    for (var i = 0; i < numOfWhiteKeys; i++) {
+        rSide[i].white();
+        black[i].white();
+        mid[i].white();
+        lSide[i].white();
+    }
+}
+
+function mousePressed() { // Non funziona ancora... c'è qualcosa che non quadra nel centrare i tasti neri (solo bianchi funziona)... non capisco cosa però
+    var root = 48;
+    var positionWhiteKeys = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24, 26, 28];
+    var positionBlackKeys = [1, 3, 6, 8, 10, 13, 15, 18, 20, 22, 25, 27];
+    if (mouseX > 0 && mouseX < (keyWidth * numOfWhiteKeys)) {
+        if ((mouseY > (0.6 * keyboardHeight)) && (mouseY < keyboardHeight))
+        {
+            // solo tasti bianchi
+            n = Math.floor(mouseX / keyWidth);
+            osc[positionWhiteKeys[n]].start();
+            osc[positionWhiteKeys[n]].freq(midiToFreq(root + positionWhiteKeys[n]));
+            envo[positionWhiteKeys[n]].play();
+        }
+        if ((mouseY <= (0.6 * keyboardHeight)) && (mouseY > 0))
+        {
+            // tasti neri e bianchi
+            n = Math.floor((mouseX + (0.667 * keyWidth)) / keyWidth) - 1; // perché con -1 sembra che almeno l'if successivo funzioni?!
+            if (n === 2 || n === 6 || n === 9 || n === 13 || n === 16) {
+                // allora è un bianco
+                // console.log(n)
+                n = Math.floor(mouseX / keyWidth);
+                osc[positionWhiteKeys[n]].start();
+                osc[positionWhiteKeys[n]].freq(midiToFreq(root + positionWhiteKeys[n]));
+                envo[positionWhiteKeys[n]].play();
+            }
+            else {
+                // tasto nero o bianco
+                if (((mouseX + (0.667 * keyWidth)) % keyWidth) < (0.667 * keyWidth)) {
+                    // tasto nero
+                    osc[positionBlackKeys[n]].start();
+                    osc[positionBlackKeys[n]].freq(midiToFreq(root + positionBlackKeys[n]));
+                    envo[positionBlackKeys[n]].play();
+                }
+                else {
+                    // tasto bianco
+                    n = Math.floor(mouseX / keyWidth);
+                    osc[positionWhiteKeys[n]].start();
+                    osc[positionWhiteKeys[n]].freq(midiToFreq(root + positionWhiteKeys[n]));
+                    envo[positionWhiteKeys[n]].play();
+                }
+            }
+        }
+    }
+}
+
+function mouseReleased() {
     for (var i = 0; i < numOfWhiteKeys; i++) {
         rSide[i].white();
         black[i].white();
