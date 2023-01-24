@@ -7,11 +7,42 @@ body {
     align-items: center;
 }
 
-#piano {
-    height: 290px;
-    padding: 90px 30px 0 30px;
+#box {
+    height: 580px;
+    padding: 30px 30px 30px 30px;
     background-color: rgba(89, 47, 11, 0.53);
     border-radius: 10px;
+}
+
+.Text {
+    text-justify: distribute;
+    text-align: center;
+    padding:  20px 0 20px 0;
+}
+
+#scoreCF {
+    width: 1020px;
+    height: 80px;
+    border-radius: 10px;
+    background-color: coral;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#scoreCTP {
+    width: 1020px;
+    height: 80px;
+    border-radius: 10px;
+    background-color: #f1dc8f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.noteText {
+    padding: 0 55px 0 55px;
 }
 
 .keys {
