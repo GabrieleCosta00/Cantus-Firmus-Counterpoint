@@ -1,9 +1,6 @@
 const pianoKeys = document.querySelectorAll('.key')
-
-function playSound(newUrl) {
-    new Audio(newUrl).play()
-    // TODO: al momento i sample di pianoforte vengono fatti partire, ma mai interrotti. Sarebbe carino che il suono si interrompesse con un fade-out al rilascio del mouse.
-}
+var notePlaying = null;
+var keyIsPressed = false;
 
 pianoKeys.forEach((pianoKey, i) => {
     const number = i < 9 ? '0' + (i + 1) : (i + 1)
@@ -11,13 +8,40 @@ pianoKeys.forEach((pianoKey, i) => {
     pianoKey.addEventListener("mousedown", () => playSound(newUrl))
     pianoKey.addEventListener("mouseup", () => newPossibilities(i))
     pianoKey.addEventListener("mousedown", () => clearPossibilities())
+    pianoKey.addEventListener("mouseup", () => stopSound())
 })
+
+function playSound(newUrl) {
+    let currentAudio = new Audio(newUrl)
+    notePlaying = currentAudio;
+    keyIsPressed = true;
+    currentAudio.play();
+}
+
+function stopSound() {
+    if(notePlaying !== null) {
+        decreaseVolume(notePlaying);
+        notePlaying = null;
+        keyIsPressed = false;
+    }
+}
+
+// "decreaseVolume" fade out the volume recursively by subtracting 0.1 each 50 ms
+
+function decreaseVolume(note) {
+    if (note.volume > 0) {
+        note.volume = note.volume - 0.1;
+        setTimeout(() => decreaseVolume(note), 50);
+    }
+}
 
 function clearPossibilities() {
     pianoKeys.forEach(pianoKey => {
         pianoKey.classList.remove("possible")
     })
 }
+
+// Here goes the rules for the choise of the next note
 
 function newPossibilities(offset) {
     console.log("offset = " + offset)
