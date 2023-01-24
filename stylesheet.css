@@ -7,17 +7,17 @@ body {
     align-items: center;
 }
 
+.Text {
+    text-justify: distribute;
+    text-align: center;
+    padding:  20px 0 20px 0;
+}
+
 #box {
     height: 580px;
     padding: 30px 30px 30px 30px;
     background-color: rgba(89, 47, 11, 0.53);
     border-radius: 10px;
-}
-
-.Text {
-    text-justify: distribute;
-    text-align: center;
-    padding:  20px 0 20px 0;
 }
 
 #scoreCF {
@@ -43,6 +43,7 @@ body {
 
 .noteText {
     padding: 0 55px 0 55px;
+    cursor: pointer;
 }
 
 .keys {
@@ -58,6 +59,7 @@ body {
     border-radius: 0 0 5px 5px;
     border: solid #000 2px;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 .black-key {
@@ -71,4 +73,8 @@ body {
 
 .possible {
     background-color: aqua;
+}
+
+.writtenOnScore {
+    background-color: #7fff85;
 }
