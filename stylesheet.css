@@ -78,3 +78,7 @@ body {
 .writtenOnScore {
     background-color: #7fff85;
 }
+
+.selectedScore {
+    border: solid #000 2px;
+}
