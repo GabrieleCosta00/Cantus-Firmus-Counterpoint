@@ -100,3 +100,50 @@ document.querySelectorAll('.noteText').forEach((note) => {
     note.addEventListener("mousedown", () => playSoundAndColourKey(note.innerHTML))
     note.addEventListener("mouseup", () => stopSound())
 })
+
+
+//Andrea sperimenta
+
+var canvas = document.getElementById("canvas_score");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = "#000000";
+
+ctx.fillText("CANTUS FIRMUS:", 20, 20)
+
+ctx.fillRect(20, 30, 1000, 1);
+ctx.fillRect(20, 45, 1000, 1);
+ctx.fillRect(20, 60, 1000, 1);
+ctx.fillRect(20, 75, 1000, 1);
+ctx.fillRect(20, 90, 1000, 1);
+
+ctx.fillText("COUNTERPOINT:", 20, 130)
+
+ctx.fillRect(20, 140, 1000, 1);
+ctx.fillRect(20, 155, 1000, 1);
+ctx.fillRect(20, 170, 1000, 1);
+ctx.fillRect(20, 185, 1000, 1);
+ctx.fillRect(20, 200, 1000, 1);
+
+ctx.beginPath();
+for(let i=5; i>0; i=i-0.1) {
+    ctx.arc(50, 60, i, 0, 2 * Math.PI);
+}
+ctx.stroke();
+
+ctx.beginPath();
+ctx.arc(100, 53.33, 5, 0, 2 * Math.PI);
+ctx.stroke();
+
+ctx.beginPath();
+for(let i=8; i>0; i=i-0.1) {
+    ctx.arc(500, 193, i, 0, 2 * Math.PI);
+}
+ctx.stroke();
+
+ctx.fillRect(485, 192, 30, 4);
+
+ctx.beginPath();
+ctx.arc(300, 177, 8, 0, 2 * Math.PI);
+ctx.stroke();
+
+ctx.fillRect(285, 177, 30, 2);
