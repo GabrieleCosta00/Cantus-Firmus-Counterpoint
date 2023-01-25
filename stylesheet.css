@@ -14,7 +14,7 @@ body {
 }
 
 #box {
-    height: 580px;
+    height: 660px;
     padding: 30px 30px 30px 30px;
     background-color: rgba(89, 47, 11, 0.53);
     border-radius: 10px;
@@ -83,6 +83,44 @@ body {
     background-color: #f1dc8f;
 }
 
+.writtenOnScore {
+    background-color: #46bd5f;
+}
+
 .selectedScore {
     border: solid #000 2px;
+}
+
+#transport {
+    display: flex;
+    margin: 30px 0 30px 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.transportButton {
+    margin: 0 10px 0 10px;
+    border: solid black 2px;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.playSelected {
+    background-color: #09b04c;
+}
+
+.stopSelected {
+    background-color: #d90000;
+}
+
+.play {
+    background-color: mediumseagreen;
+}
+
+.stop {
+    background-color: #c42e2e;
 }

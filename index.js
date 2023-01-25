@@ -2,11 +2,15 @@ const pianoKeys = document.querySelectorAll('.key')
 const noteTexts = document.querySelectorAll('.noteText')
 const CFScore = document.getElementById('scoreCF')
 const CTPScore = document.getElementById('scoreCTP')
-var notePlaying = null;
+var notePlayingCF = null;
+var notePlayingCTP = null;
 var indexCF = 0;
 var indexCTP = 0;
 var whichScore = "CF";
 var whichScorePt;
+var currentTransport = 0;
+var isPlaying = false;
+const playRate = 1000; // ms between the notes when playing
 const noteNames = [ 'C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
     'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4', 'C5'];
 
@@ -43,15 +47,18 @@ function playSoundAndWrite(newUrl, number) {
         if (indexCF >= 8) {indexCF = 0;}
         writeNote(noteNames[Number(number)-1], indexCF);
         indexCF = indexCF + 1;
+        let currentAudio = new Audio(newUrl)
+        notePlayingCF = currentAudio;
+        currentAudio.play();
     }
     else {
         if (indexCTP >= 8) {indexCTP = 0}
         writeNote(noteNames[Number(number)-1], indexCTP+8);
         indexCTP = indexCTP + 1;
+        let currentAudio = new Audio(newUrl)
+        notePlayingCTP = currentAudio;
+        currentAudio.play();
     }
-    let currentAudio = new Audio(newUrl)
-    notePlaying = currentAudio;
-    currentAudio.play();
 }
 
 // It plays the sound corresponding to the name of the note, and colours the corresponding key
@@ -66,16 +73,21 @@ function playSoundAndColourKey(noteName) {
     const number = i < 9 ? '0' + (i + 1) : (i + 1)
     const newUrl = 'Samples/Piano_sample_' + number + '.mp3'
     let currentAudio = new Audio(newUrl)
-    notePlaying = currentAudio;
+    if (whichScorePt === "CF") {notePlayingCF = currentAudio;}
+    else {notePlayingCTP = currentAudio;}
     currentAudio.play();
 
 }
 
 // It stops all the sound gradually (decreasing the volume) and clear the colour of the keyboard
 function stopSound() {
-    if(notePlaying !== null) {
-        decreaseVolume(notePlaying);
-        notePlaying = null;
+    if(notePlayingCF !== null) {
+        decreaseVolume(notePlayingCF);
+        notePlayingCF = null;
+    }
+    if(notePlayingCTP !== null) {
+        decreaseVolume(notePlayingCTP);
+        notePlayingCTP = null;
     }
     pianoKeys.forEach((pianoKey) => {
         if (pianoKey.classList.contains("writtenOnCFScore")) {
@@ -92,7 +104,7 @@ function stopSound() {
 function decreaseVolume(note) {
     if (note.volume > 0.1) {
         note.volume = note.volume - 0.1;
-        setTimeout(() => decreaseVolume(note), 50);
+        setTimeout(() => decreaseVolume(note), 100);
     }
 
 }
@@ -118,15 +130,49 @@ function newPossibilities(offset) {
 // It writes the note you played in the CF/CTP tabs
 function writeNote(note, index) {
     noteTexts.forEach((text, i) => {
-        if (i === index) {
-            text.innerHTML = note;
-        }
+        if (i === index) {text.innerHTML = note;}
     })
-
 }
 
-// When you want you listen the notes of the CF, you can click them...
-document.querySelectorAll('.noteText').forEach((note) => {
+// When you want you listen the notes of the CF/CTP, you can click them...
+noteTexts.forEach((note) => {
     note.addEventListener("mousedown", () => playSoundAndColourKey(note.innerHTML))
     note.addEventListener("mouseup", () => stopSound())
 })
+
+// When you click on the PLAY button it will start the execution
+function transportPlay() {
+    if (isPlaying === false) {
+        isPlaying = true;
+        myTimeout = setTimeout(() => playing(), playRate);
+    }
+}
+
+function playing() {
+    noteTexts.forEach((note, i) => {
+        stopSound();
+        if (i === currentTransport) {playSoundAndColourKey(note.innerHTML);}
+    })
+    noteTexts.forEach((note, i) => {
+        stopSound();
+        if (i === currentTransport + 8) {playSoundAndColourKey(note.innerHTML);}
+    })
+    currentTransport++;
+    if (currentTransport === 8) {
+        currentTransport = 0;
+        transportStop();
+    }
+    else {
+        isPlaying = false;
+        transportPlay();
+    }
+}
+
+// When you click on the STOP button it will stop the execution
+function transportStop() {
+    clearTimeout(myTimeout);
+    stopSound();
+    isPlaying = false;
+    currentTransport = 0;
+    setTimeout(() => {console.log("Stop unselected")}, 500);
+}
