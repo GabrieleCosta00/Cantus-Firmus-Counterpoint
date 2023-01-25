@@ -1,0 +1,80 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    align-items: center;
+}
+
+.Text {
+    text-justify: distribute;
+    text-align: center;
+    padding:  20px 0 20px 0;
+}
+
+#box {
+    height: 580px;
+    padding: 30px 30px 30px 30px;
+    background-color: rgba(89, 47, 11, 0.53);
+    border-radius: 10px;
+}
+
+#scoreCF {
+    width: 1020px;
+    height: 80px;
+    border-radius: 10px;
+    background-color: coral;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#scoreCTP {
+    width: 1020px;
+    height: 80px;
+    border-radius: 10px;
+    background-color: #f1dc8f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.noteText {
+    padding: 0 55px 0 55px;
+    cursor: pointer;
+}
+
+.keys {
+    position: relative;
+    display: flex;
+}
+
+.key {
+    width: 68px;
+    height: 280px;
+    position: relative;
+    background-color: #fff;
+    border-radius: 0 0 5px 5px;
+    border: solid #000 2px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.black-key {
+    width: 38px;
+    height: 160px;
+    position: absolute;
+    background-color: #000;
+    border-radius: 0 0 5px 5px;
+    z-index: 9;
+}
+
+.possible {
+    background-color: aqua;
+}
+
+.writtenOnScore {
+    background-color: #7fff85;
+}
