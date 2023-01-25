@@ -106,7 +106,6 @@ function decreaseVolume(note) {
         note.volume = note.volume - 0.1;
         setTimeout(() => decreaseVolume(note), 100);
     }
-
 }
 
 // When you release the mouse, it clears all the keys
@@ -114,7 +113,6 @@ function clearPossibilities() {
     pianoKeys.forEach(pianoKey => {
         pianoKey.classList.remove("possible")
     })
-
 }
 
 // Here goes the rules for the choise of the next note (it add a colour)
@@ -124,7 +122,6 @@ function newPossibilities(offset) {
             pianoKey.classList.add("possible")
         }
     })
-
 }
 
 // It writes the note you played in the CF/CTP tabs
@@ -174,5 +171,4 @@ function transportStop() {
     stopSound();
     isPlaying = false;
     currentTransport = 0;
-    setTimeout(() => {console.log("Stop unselected")}, 500);
 }
