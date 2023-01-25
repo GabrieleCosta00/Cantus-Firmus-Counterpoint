@@ -6,6 +6,7 @@ var notePlaying = null;
 var indexCF = 0;
 var indexCTP = 0;
 var whichScore = "CF";
+var whichScorePt;
 const noteNames = [ 'C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
     'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4', 'C5'];
 
@@ -20,6 +21,10 @@ CTPScore.addEventListener("click", () => {
     whichScore = "CTP";
     if (!CTPScore.classList.contains('selectedScore')) {CTPScore.classList.add('selectedScore')}
 })
+
+// If you are over the CF/CTP box the flag "whichScorePt" is set to "CF"/"CTP". Used for colour the key with the corresponding colour
+CFScore.addEventListener("mouseover", () => {whichScorePt = "CF"})
+CTPScore.addEventListener("mouseover", () => {whichScorePt = "CTP"})
 
 // When you click on the keyboard...
 pianoKeys.forEach((pianoKey, i) => {
@@ -54,7 +59,8 @@ function playSoundAndColourKey(noteName) {
     const i = noteNames.indexOf(noteName)
     pianoKeys.forEach((pianoKey, j) => {
         if (i === j) {
-            pianoKey.classList.add("writtenOnScore")
+            if (whichScorePt === "CF") {pianoKey.classList.add("writtenOnCFScore")}
+            else {pianoKey.classList.add("writtenOnCTPScore")}
         }
     })
     const number = i < 9 ? '0' + (i + 1) : (i + 1)
@@ -72,8 +78,11 @@ function stopSound() {
         notePlaying = null;
     }
     pianoKeys.forEach((pianoKey) => {
-        if (pianoKey.classList.contains("writtenOnScore")) {
-            pianoKey.classList.remove("writtenOnScore")
+        if (pianoKey.classList.contains("writtenOnCFScore")) {
+            pianoKey.classList.remove("writtenOnCFScore")
+        }
+        if (pianoKey.classList.contains("writtenOnCTPScore")) {
+            pianoKey.classList.remove("writtenOnCTPScore")
         }
     })
 
@@ -120,5 +129,4 @@ function writeNote(note, index) {
 document.querySelectorAll('.noteText').forEach((note) => {
     note.addEventListener("mousedown", () => playSoundAndColourKey(note.innerHTML))
     note.addEventListener("mouseup", () => stopSound())
-
 })

@@ -75,8 +75,12 @@ body {
     background-color: aqua;
 }
 
-.writtenOnScore {
-    background-color: #7fff85;
+.writtenOnCFScore {
+    background-color: #ff7f50;
+}
+
+.writtenOnCTPScore {
+    background-color: #f1dc8f;
 }
 
 .selectedScore {
