@@ -12,7 +12,8 @@ var currentTransport = 0;
 var isPlaying = false;
 const playRate = 1000; // ms between the notes when playing
 const noteNames = [ 'C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
-    'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4', 'C5'];
+    'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
+    'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5', 'C6'];
 
 // If you click on the CF box you will write this score. Same for the CTP
 CFScore.addEventListener("click", () => {
@@ -38,7 +39,6 @@ pianoKeys.forEach((pianoKey, i) => {
     pianoKey.addEventListener("mouseup", () => newPossibilities(i))
     pianoKey.addEventListener("mousedown", () => clearPossibilities())
     pianoKey.addEventListener("mouseup", () => stopSound())
-
 })
 
 // It plays the sound you chosen on the keyboard and write it in the CF/CTP, based on which you have chosen
@@ -76,7 +76,6 @@ function playSoundAndColourKey(noteName) {
     if (whichScorePt === "CF") {notePlayingCF = currentAudio;}
     else {notePlayingCTP = currentAudio;}
     currentAudio.play();
-
 }
 
 // It stops all the sound gradually (decreasing the volume) and clear the colour of the keyboard
@@ -97,7 +96,6 @@ function stopSound() {
             pianoKey.classList.remove("writtenOnCTPScore")
         }
     })
-
 }
 
 // "decreaseVolume" fade out the volume recursively by subtracting 0.1 each 50 ms
@@ -171,4 +169,5 @@ function transportStop() {
     stopSound();
     isPlaying = false;
     currentTransport = 0;
+    setTimeout(() => {console.log("Stop unselected")}, 500);
 }

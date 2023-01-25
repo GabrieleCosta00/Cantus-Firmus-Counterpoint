@@ -21,7 +21,7 @@ body {
 }
 
 #scoreCF {
-    width: 1020px;
+    width: 1495px;
     height: 80px;
     border-radius: 10px;
     background-color: coral;
@@ -31,7 +31,7 @@ body {
 }
 
 #scoreCTP {
-    width: 1020px;
+    width: 1495px;
     height: 80px;
     border-radius: 10px;
     background-color: #f1dc8f;
@@ -42,7 +42,7 @@ body {
 }
 
 .noteText {
-    padding: 0 55px 0 55px;
+    padding: 0 75px 0 75px;
     cursor: pointer;
 }
 
