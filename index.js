@@ -165,13 +165,13 @@ function playSoundAndWrite(newUrl, number) {
         if (indexCF >= 8) {indexCF = 0;}
         if (indexCF === 0) {
             clearTonalityMask();
-            setTonalityMask(Number(number)-1, 0); // Means ("this note", "is the root (= 0)")
+            setTonalityMask(Number(number)-1, 0); // Means ("this note index", "is the root (= 0)")
         }
-        if (((Number(number) - CFNotes[0]) % 12) === 3) {
-            setTonalityMask(Number(number)-1, 3); // Means ("this note", "is the minor 3rd") so it's a minor scale
+        if (((((Number(number) - CFNotes[0]) % 12) === 3) || (((CFNotes[0] - Number(number)) % 12) === 9)) && (tonalityMask[(CFNotes[0] + 2) % 36] !== 0)) {
+            setTonalityMask(Number(number)-1, 3); // Means ("this note index", "is the minor 3rd") so it's a minor scale
         }
-        if (((Number(number) - CFNotes[0]) % 12) === 4) {
-            setTonalityMask(Number(number)-1, 4); // Means ("this note", "is the major 3rd") so it's a major scale
+        if (((((Number(number) - CFNotes[0]) % 12) === 4) || (((CFNotes[0] - Number(number)) % 12) === 8)) && (tonalityMask[(CFNotes[0] + 3) % 36] !== 0)) {
+            setTonalityMask(Number(number)-1, 4); // Means ("this note index", "is the major 3rd") so it's a major scale
         }
         writeNote(noteNames[Number(number)-1], indexCF);
         CFNotes[indexCF] = Number(number);
@@ -242,7 +242,6 @@ function clearPossibilities() {
     pianoKeys.forEach(pianoKey => {
         pianoKey.classList.remove("possible")
     })
-    console.log("cleared")
 }
 
 // Here goes the rules for the choise of the next note (it add a colour)
