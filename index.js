@@ -126,7 +126,7 @@ function converter(ch) {
 function playSoundAndWrite(newUrl, number) {
     if (whichScore === "CF") {
         if (indexCF >= 8) {indexCF = 0;}
-        writeNote(noteNames[Number(number)-1], indexCF);
+        writeNote(number, noteNames[Number(number)-1], indexCF);
         CFNotes[indexCF] = Number(number);
         indexCF = indexCF + 1;
         let currentAudio = new Audio(newUrl)
@@ -208,10 +208,11 @@ function newPossibilities(offset) {
 }
 
 // It writes the note you played in the CF/CTP tabs
-function writeNote(note, index) {
+function writeNote(number, note, index) {
     noteTexts.forEach((text, i) => {
         if (i === index) {text.innerHTML = note;}
     })
+    drawNote(number, index)
 }
 
 // When you want you listen the notes of the CF/CTP, you can click them...
@@ -254,4 +255,62 @@ function transportStop() {
     stopSound();
     isPlaying = false;
     currentTransport = 0;
+}
+
+var canvas = document.getElementById("canvas_score");
+var ctx = canvas.getContext("2d");
+ctx.fillStyle = "#000000";
+
+ctx.fillRect(20, 40, 920, 1);
+ctx.fillRect(20, 56, 920, 1);
+ctx.fillRect(20, 72, 920, 1);
+ctx.fillRect(20, 88, 920, 1);
+ctx.fillRect(20, 104, 920, 1);
+
+ctx.fillRect(20, 150, 920, 1);
+ctx.fillRect(20, 166, 920, 1);
+ctx.fillRect(20, 182, 920, 1);
+ctx.fillRect(20, 198, 920, 1);
+ctx.fillRect(20, 214, 920, 1);
+
+const alteredNotes = [1, 3, 6, 8, 10, 13, 15, 18, 20, 22]
+const yCoordinatesHigherStave = [120, 0, 112, 0, 104, 96, 0, 88, 0, 80, 0, 72, 64, 0,
+    56, 0, 48, 40, 0, 32, 0, 24, 0, 16, 8]
+const yCoordinatesLowerStave = [190, 0, 182, 0, 174, 166, 0, 158, 0, 150, 0, 142]
+
+function drawNote(number, index) {
+    let x = 100 + 100 * index
+    let y
+    if (number > 12) {
+        number = number - 13
+        if (alteredNotes.includes(number)) {
+            y = yCoordinatesHigherStave[number - 1]
+            drawSharp(x, y)
+        }
+        else
+            y = yCoordinatesHigherStave[number]
+        if (number < 2)
+            ctx.fillRect(x-12, y, 24, 2)
+    }
+    else {
+        number = number - 1
+        if (alteredNotes.includes(number)) {
+            y = yCoordinatesLowerStave[number - 1]
+            drawSharp(x, y)
+        }
+        else
+            y = yCoordinatesLowerStave[number]
+    }
+    ctx.beginPath()
+    ctx.arc(x, y, 8, 0, 2 * Math.PI)
+    ctx.stroke()
+}
+
+function drawSharp(x, y) {
+    x = x - 20
+    y = y - 6
+    ctx.fillRect(x, y, 1, 15)
+    ctx.fillRect(x+5, y-2, 1, 15)
+    ctx.fillRect(x-3, y+3, 11, 1)
+    ctx.fillRect(x-3, y+8, 11, 1)
 }
