@@ -14,9 +14,10 @@ let keyIsPressed = false;
 const playRate = 1000; // ms between the notes when playing
 let CFNotes = [0, 0, 0, 0, 0, 0, 0, 0]; // 0 -> no note; number!=0 -> a valid note
 let CTPNotes = [0, 0, 0, 0, 0, 0, 0, 0]; // 0 -> no note; number!=0 -> a valid note
+let tonalityMask = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 const noteNames = [ 'C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
     'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
-    'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5', 'C6'];
+    'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5'];
 
 // The peace of code that places the black keys in the keyboard
 let nthBlackKey = 0;
@@ -25,6 +26,35 @@ function displayBlackKeys(e, index) {
     if (index === 2 || index === 5 || index === 7 || index === 10 || index === 12) {nthBlackKey++;}
     e.setAttribute("style", "left: " + (37 + (nthBlackKey * 51)) + "px");
     nthBlackKey++;
+}
+
+// The function that clear the tonality
+function clearTonalityMask() {
+    for (let i = 0; i < tonalityMask.length; i++) {
+        tonalityMask[i] = 1;
+    }
+}
+
+// The function that sets the mask for the tonality (invoked on the first note of the CF)
+function setTonalityMask(root) {
+    for (let i = 0; i < noteNames.length; i++) {
+        if (i === root) {
+            for (let j = 0; j<noteNames.length; j++) {
+                if ((j % 12) === 1 || (j % 12) === 3 || (j % 12) === 6 || (j % 12) === 8 || (j % 12) === 10) {
+                    tonalityMask[(j + i) % 36] = 0;
+                }
+            }
+            i = noteNames.length;
+        }
+    }
+    pianoKeys.forEach((pianoKey, k) => {
+        if (tonalityMask[k % 12] === 1) {
+            pianoKey.classList.remove("outOfTonality")
+        }
+        else {
+            pianoKey.classList.add("outOfTonality")
+        }
+    })
 }
 
 // If you click on the CF box you will write this score. Same for the CTP
@@ -117,15 +147,19 @@ function converter(ch) {
         case 'p': {num = '34'; break;}
         case '\'': {num = '35'; break;}
         case 'è': {num = '36'; break;}
-        case '+': {num = '37'; break;}
     }
     return num;
 }
 
-// It plays the sound you chosen on the keyboard and write it in the CF/CTP (in both the box and the vector of notes), based on which you have chosen
+// It plays the sound you chosen on the keyboard and write it in the CF/CTP (in both the box and the vector of notes),
+// based on which you have chosen. If you are playing the first note of the CF, it clears and sets the tonality
 function playSoundAndWrite(newUrl, number) {
     if (whichScore === "CF") {
         if (indexCF >= 8) {indexCF = 0;}
+        if (indexCF === 0) {
+            clearTonalityMask();
+            setTonalityMask(Number(number)-1);
+        }
         writeNote(noteNames[Number(number)-1], indexCF);
         CFNotes[indexCF] = Number(number);
         indexCF = indexCF + 1;
