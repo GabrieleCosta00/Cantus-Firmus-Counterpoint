@@ -35,12 +35,19 @@ function clearTonalityMask() {
     }
 }
 
-// The function that sets the mask for the tonality (invoked on the first note of the CF)
-function setTonalityMask(root) {
+// The function that sets the mask for the tonality (invoked on the first note of the CF),
+// passing the note and a flag that tells if it's the root or the 3rd ("0" or "3" or "4")
+function setTonalityMask(note, which) {
     for (let i = 0; i < noteNames.length; i++) {
-        if (i === root) {
+        if (i === note) {
             for (let j = 0; j<noteNames.length; j++) {
-                if ((j % 12) === 1 || (j % 12) === 3 || (j % 12) === 6 || (j % 12) === 8 || (j % 12) === 10) {
+                if ((which === 0) && ((j % 12) === 1 || (j % 12) === 6 || (j % 12) === 8 || (j % 12) === 10)) {
+                    tonalityMask[(j + i) % 36] = 0;
+                }
+                if ((which === 3) && ((j % 12) === 1)) {
+                    tonalityMask[(j + i) % 36] = 0;
+                }
+                if ((which === 4) && ((j % 12) === 11)) {
                     tonalityMask[(j + i) % 36] = 0;
                 }
             }
@@ -158,7 +165,13 @@ function playSoundAndWrite(newUrl, number) {
         if (indexCF >= 8) {indexCF = 0;}
         if (indexCF === 0) {
             clearTonalityMask();
-            setTonalityMask(Number(number)-1);
+            setTonalityMask(Number(number)-1, 0); // Means ("this note", "is the root (= 0)")
+        }
+        if (((Number(number) - CFNotes[0]) % 12) === 3) {
+            setTonalityMask(Number(number)-1, 3); // Means ("this note", "is the minor 3rd") so it's a minor scale
+        }
+        if (((Number(number) - CFNotes[0]) % 12) === 4) {
+            setTonalityMask(Number(number)-1, 4); // Means ("this note", "is the major 3rd") so it's a major scale
         }
         writeNote(noteNames[Number(number)-1], indexCF);
         CFNotes[indexCF] = Number(number);
