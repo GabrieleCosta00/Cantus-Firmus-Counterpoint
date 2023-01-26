@@ -135,7 +135,7 @@ function playSoundAndWrite(newUrl, number) {
     }
     else {
         if (indexCTP >= 8) {indexCTP = 0}
-        writeNote(noteNames[Number(number)-1], indexCTP+8);
+        writeNote(number, noteNames[Number(number)-1], indexCTP+8);
         CTPNotes[indexCTP] = Number(number);
         indexCTP = indexCTP + 1;
         let currentAudio = new Audio(newUrl)
