@@ -187,6 +187,7 @@ function playWriteClearPoss(newUrl, number) {
 
     // ... and then...
     if (goodNote === 1) {
+        let ctp = false
         if (whichScore === "CF") {
             if (indexCF >= 8) {
                 indexCF = 0;
@@ -202,20 +203,21 @@ function playWriteClearPoss(newUrl, number) {
             if (((((Number(number) - CFNotes[0]) % 12) === 4) || (((CFNotes[0] - Number(number)) % 12) === 8)) && (tonalityMask[(CFNotes[0] + 3) % 36] !== 0)) {
                 setTonalityMask(Number(number) - 1, 4); // Means ("this note index", "is the major 3rd") so it's a major scale
             }
-            writeNote(noteNames[Number(number) - 1], indexCF);
+            writeNote(number, noteNames[Number(number) - 1], indexCF, ctp);
             CFNotes[indexCF] = Number(number);
             indexCF = indexCF + 1;
             let currentAudio = new Audio(newUrl)
             notePlayingCF = currentAudio;
             currentAudio.play();
         } else {
+            ctp = true
             if (indexCTP >= 8) {
                 indexCTP = 0
             }
             if (indexCTP === 0) {
                 clearScore();
             }
-            writeNote(noteNames[Number(number) - 1], indexCTP + 8);
+            writeNote(number, noteNames[Number(number) - 1], indexCTP + 8, ctp);
             CTPNotes[indexCTP] = Number(number);
             indexCTP = indexCTP + 1;
             let currentAudio = new Audio(newUrl)
@@ -298,10 +300,11 @@ function newPossibilities(offset) {
 }
 
 // It writes the note you played in the CF/CTP tabs
-function writeNote(note, index) {
+function writeNote(number, note, index, ctp) {
     noteTexts.forEach((text, i) => {
         if (i === index) {text.innerHTML = note;}
     })
+    drawNote(number, index % 8, ctp)
 }
 
 // When you want you listen the notes of the CF/CTP, you can click them...
@@ -344,4 +347,91 @@ function transportStop() {
     stopSound();
     isPlaying = false;
     currentTransport = 0;
+}
+
+// Write on the pentagramma.
+const canvas = document.getElementById("canvas_score");
+const ctx = canvas.getContext("2d");
+
+function drawStaves() {
+    ctx.fillRect(20, 40, 920, 1);
+    ctx.fillRect(20, 56, 920, 1);
+    ctx.fillRect(20, 72, 920, 1);
+    ctx.fillRect(20, 88, 920, 1);
+    ctx.fillRect(20, 104, 920, 1);
+
+    ctx.fillRect(20, 150, 920, 1);
+    ctx.fillRect(20, 166, 920, 1);
+    ctx.fillRect(20, 182, 920, 1);
+    ctx.fillRect(20, 198, 920, 1);
+    ctx.fillRect(20, 214, 920, 1);
+}
+
+const alteredNotes = [1, 3, 6, 8, 10, 13, 15, 18, 20, 22]
+const yCoordinatesHigherStave = [120, 0, 112, 0, 104, 96, 0, 88, 0, 80, 0, 72, 64, 0,
+    56, 0, 48, 40, 0, 32, 0, 24, 0, 16, 8]
+const yCoordinatesLowerStave = [190, 0, 182, 0, 174, 166, 0, 158, 0, 150, 0, 142]
+
+function drawNote(number, index, ctp) {
+    ctx.fillStyle = "rgb(0, 0, 0)"
+    if (index === 0) {
+        ctx.clearRect(0, 0, 1015, 200)
+        drawStaves()
+        if (ctp)
+            for (let i=0; i<CFNotes.length; i++)
+                drawNote(CFNotes[i], i,false)
+    }
+    let x = 100 + 100 * index
+    let y
+    if (number > 12) {
+        number = number - 13
+        if (alteredNotes.includes(number)) {
+            y = yCoordinatesHigherStave[number - 1]
+            drawSharp(x, y, ctp)
+        }
+        else
+            y = yCoordinatesHigherStave[number]
+        if (ctp)
+            ctx.fillStyle = "rgb(255, 255, 255)"
+        else
+            ctx.fillStyle = "rgb(0, 0, 0)"
+        if (number < 2)
+            ctx.fillRect(x-12, y, 24, 2)
+        if (number >= 21 && number <= 22)
+            ctx.fillRect(x-12, y, 24, 2)
+        if (number > 22) {
+            ctx.fillRect(x-12, y+10, 24, 2)
+            if (number > 23)
+                ctx.fillRect(x-12, y, 24, 2)
+        }
+    }
+    else {
+        number = number - 1
+        if (alteredNotes.includes(number)) {
+            y = yCoordinatesLowerStave[number - 1]
+            drawSharp(x, y, ctp)
+        }
+        else
+            y = yCoordinatesLowerStave[number]
+    }
+    if (ctp)
+        ctx.strokeStyle = "rgb(255, 255, 255)"
+    else
+        ctx.strokeStyle = "rgb(0, 0, 0)"
+    ctx.beginPath()
+    ctx.arc(x, y, 8, 0, 2 * Math.PI)
+    ctx.stroke()
+}
+
+function drawSharp(x, y, ctp) {
+    x = x - 20
+    y = y - 6
+    if (ctp)
+        ctx.fillStyle = "rgb(255, 255, 255)"
+    else
+        ctx.fillStyle = "rgb(0, 0, 0)"
+    ctx.fillRect(x, y, 1, 15)
+    ctx.fillRect(x+5, y-2, 1, 15)
+    ctx.fillRect(x-3, y+3, 11, 1)
+    ctx.fillRect(x-3, y+8, 11, 1)
 }
