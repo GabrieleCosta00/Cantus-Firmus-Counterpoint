@@ -64,6 +64,20 @@ function setTonalityMask(note, which) {
     })
 }
 
+// The function that clear all the note written if you are playing the first one
+function clearScore() {
+    if (whichScore === "CF") {
+        for (let i = 0; i < CFNotes.length; i++) {CFNotes[i] = 0; CTPNotes[i] = 0;}
+        noteTexts.forEach((note) => {note.innerHTML = null;})
+    }
+    else {
+        for (let i = 0; i < CTPNotes.length; i++) {CTPNotes[i] = 0;}
+        noteTexts.forEach((note, k) => {
+            if (k > 7) {note.innerHTML = null;}
+        })
+    }
+}
+
 // If you click on the CF box you will write this score. Same for the CTP
 CFScore.addEventListener("click", () => {
     if (CTPScore.classList.contains('selectedScore')) {CTPScore.classList.remove('selectedScore')}
@@ -164,6 +178,7 @@ function playSoundAndWrite(newUrl, number) {
     if (whichScore === "CF") {
         if (indexCF >= 8) {indexCF = 0;}
         if (indexCF === 0) {
+            clearScore();
             clearTonalityMask();
             setTonalityMask(Number(number)-1, 0); // Means ("this note index", "is the root (= 0)")
         }
@@ -182,6 +197,7 @@ function playSoundAndWrite(newUrl, number) {
     }
     else {
         if (indexCTP >= 8) {indexCTP = 0}
+        if (indexCTP === 0) {clearScore();}
         writeNote(noteNames[Number(number)-1], indexCTP+8);
         CTPNotes[indexCTP] = Number(number);
         indexCTP = indexCTP + 1;
