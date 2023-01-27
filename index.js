@@ -42,13 +42,25 @@ function setTonalityMask(note, which) {
     for (let i = 0; i < noteNames.length; i++) {
         if (i === note) {
             for (let j = 0; j<noteNames.length; j++) {
-                if ((which === 0) && ((j % 12) === 1 || (j % 12) === 6 || (j % 12) === 8 || (j % 12) === 10)) {
+                if ((which === 0) && ((j % 12) === 1 || (j % 12) === 6)) {
                     tonalityMask[(j + i) % 36] = 0;
                 }
-                if ((which === 3) && ((j % 12) === 1)) {
+                if ((which === 3) && ((j % 12) === 1 || (j % 12) === 6 || (j % 12) === 8)) {
                     tonalityMask[(j + i) % 36] = 0;
                 }
-                if ((which === 4) && ((j % 12) === 11)) {
+                if ((which === 4) && ((j % 12) === 4 || (j % 12) === 6 || (j % 12) === 11)) {
+                    tonalityMask[(j + i) % 36] = 0;
+                }
+                if ((which === 8) && ((j % 12) === 1 || (j % 12) === 3 || (j % 12) === 8)) {
+                    tonalityMask[(j + i) % 36] = 0;
+                }
+                if ((which === 9) && ((j % 12) === 1 || (j % 12) === 6 || (j % 12) === 11)) {
+                    tonalityMask[(j + i) % 36] = 0;
+                }
+                if ((which === 10) && ((j % 12) === 1 || (j % 12) === 6 || (j % 12) === 11)) {
+                    tonalityMask[(j + i) % 36] = 0;
+                }
+                if ((which === 11) && ((j % 12) === 4 || (j % 12) === 9 || (j % 12) === 11)) {
                     tonalityMask[(j + i) % 36] = 0;
                 }
             }
@@ -202,6 +214,18 @@ function playWriteClearPoss(newUrl, number) {
             if (((((Number(number) - CFNotes[0]) % 12) === 4) || (((CFNotes[0] - Number(number)) % 12) === 8)) && (tonalityMask[(CFNotes[0] + 3) % 36] !== 0)) {
                 setTonalityMask(Number(number) - 1, 4); // Means ("this note index", "is the major 3rd") so it's a major scale
             }
+            if (((((Number(number) - CFNotes[0]) % 12) === 8) || (((CFNotes[0] - Number(number)) % 12) === 4)) && (tonalityMask[(CFNotes[0] + 7) % 36] !== 0)) {
+                setTonalityMask(Number(number) - 1, 8); // Means ("this note index", "is the major 3rd") so it's a major scale
+            }
+            if (((((Number(number) - CFNotes[0]) % 12) === 9) || (((CFNotes[0] - Number(number)) % 12) === 3)) && (tonalityMask[(CFNotes[0] + 8) % 36] !== 0)) {
+                setTonalityMask(Number(number) - 1, 9); // Means ("this note index", "is the major 3rd") so it's a major scale
+            }
+            if (((((Number(number) - CFNotes[0]) % 12) === 10) || (((CFNotes[0] - Number(number)) % 12) === 2)) && (tonalityMask[(CFNotes[0] + 9) % 36] !== 0)) {
+                setTonalityMask(Number(number) - 1, 10); // Means ("this note index", "is the major 3rd") so it's a major scale
+            }
+            if (((((Number(number) - CFNotes[0]) % 12) === 11) || (((CFNotes[0] - Number(number)) % 12) === 1)) && (tonalityMask[(CFNotes[0] + 10) % 36] !== 0)) {
+                setTonalityMask(Number(number) - 1, 11); // Means ("this note index", "is the major 3rd") so it's a major scale
+            }
             writeNote(noteNames[Number(number) - 1], indexCF);
             CFNotes[indexCF] = Number(number);
             indexCF = indexCF + 1;
@@ -284,9 +308,25 @@ function clearPossibilities() {
 function newPossibilities(offset) {
     pianoKeys.forEach((pianoKey, i) => {
         // TODO: here goes the conditions for NOT good notes
+        // TODO: aggiornare tutte le possibilità quando si arriva sull'ultima nota del CF
+        // TODO: implementare la condizione che al momento ha "0" (riga 301)
         if (whichScore === "CF") {  // Here the CF's conditions
-            if (Math.abs(Number(offset)-i) > 3 || pianoKey.classList.contains("outOfTonality")) {
-                pianoKey.classList.add("notPossible")
+            if (indexCF === 6) {
+                if (i !== (CFNotes[0] + 1)) {pianoKey.classList.add("notPossible")}
+            }
+            else {
+                if (indexCF === 7) {
+                    if (i !== (CFNotes[0] - 1)) {
+                        pianoKey.classList.add("notPossible")
+                    }
+                } else {
+                    if (Math.abs(Number(offset) - i) > 12 ||  // Salti non più larghi di un'ottava
+                        0 || // Rispetto alla nota più alta o più bassa suonata non può essere più lontano di 16 ST
+                        Math.abs(Number(offset) - i) === 0 || // Non si possono ripetere le stesse note
+                        pianoKey.classList.contains("outOfTonality")) {
+                        pianoKey.classList.add("notPossible")
+                    }
+                }
             }
         }
         else {  // Here the CTP's conditions
