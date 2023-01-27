@@ -94,8 +94,8 @@ body {
     padding-top: 80px;
 }
 
-.possible {
-    background-color: aqua;
+.notPossible {
+    background-color: #424242;
 }
 
 .outOfTonality {

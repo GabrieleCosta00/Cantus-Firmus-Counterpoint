@@ -11,6 +11,7 @@ let whichScorePt;
 let currentTransport = 0;
 let isPlaying = false;
 let keyIsPressed = false;
+let goodNote = 1; // 1 -> good note, 0 -> not a good note
 const playRate = 1000; // ms between the notes when playing
 let CFNotes = [0, 0, 0, 0, 0, 0, 0, 0]; // 0 -> no note; number!=0 -> a valid note
 let CTPNotes = [0, 0, 0, 0, 0, 0, 0, 0]; // 0 -> no note; number!=0 -> a valid note
@@ -98,9 +99,8 @@ CTPScore.addEventListener("mouseover", () => {whichScorePt = "CTP"})
 pianoKeys.forEach((pianoKey, i) => {
     const number = i < 9 ? '0' + (i + 1) : (i + 1)
     const newUrl = 'Samples/Piano_sample_' + number + '.mp3'
-    pianoKey.addEventListener("mousedown", () => playSoundAndWrite(newUrl, number))
+    pianoKey.addEventListener("mousedown", () => playWriteClearPoss(newUrl, number))
     pianoKey.addEventListener("mouseup", () => newPossibilities(i))
-    pianoKey.addEventListener("mousedown", () => clearPossibilities())
     pianoKey.addEventListener("mouseup", () => stopSound())
 })
 
@@ -111,19 +111,20 @@ document.addEventListener("keyup", newPossibilitiesKey)
 
 function newPossibilitiesKey(e) {
     let i = (Number(converter(e)) - 1);
-    newPossibilities(i);
+    if (i !== -1 && goodNote === 1) {   // Prevent from when you select a wrong key or note
+        newPossibilities(i);
+    }
 }
 
 // The function that does the same operations of the "pianoKeys.forEach..." of the previous lines,
 // after converting the character to the corresponding piano key
 function convertPlayWriteClearPoss(character) {
-    if (!keyIsPressed) {
+    if (!keyIsPressed) { // Prevent from multiple firing when hold on the key
         keyIsPressed = true;
         let number = converter(character)
         if (number !== '0') {
             const newUrl = 'Samples/Piano_sample_' + number + '.mp3'
-            playSoundAndWrite(newUrl, number)
-            clearPossibilities()
+            playWriteClearPoss(newUrl, number)
         }
     }
 }
@@ -174,37 +175,56 @@ function converter(ch) {
 
 // It plays the sound you chosen on the keyboard and write it in the CF/CTP (in both the box and the vector of notes),
 // based on which you have chosen. If you are playing the first note of the CF, it clears and sets the tonality
-function playSoundAndWrite(newUrl, number) {
-    if (whichScore === "CF") {
-        if (indexCF >= 8) {indexCF = 0;}
-        if (indexCF === 0) {
-            clearScore();
-            clearTonalityMask();
-            setTonalityMask(Number(number)-1, 0); // Means ("this note index", "is the root (= 0)")
+function playWriteClearPoss(newUrl, number) {
+
+    // Check if the note is good...
+    pianoKeys.forEach((note, k) => {
+        if (k === (Number(number) - 1)) {
+            if (note.classList.contains("notPossible")) {goodNote = 0;}
+            else {goodNote = 1;}
         }
-        if (((((Number(number) - CFNotes[0]) % 12) === 3) || (((CFNotes[0] - Number(number)) % 12) === 9)) && (tonalityMask[(CFNotes[0] + 2) % 36] !== 0)) {
-            setTonalityMask(Number(number)-1, 3); // Means ("this note index", "is the minor 3rd") so it's a minor scale
+    })
+
+    // ... and then...
+    if (goodNote === 1) {
+        if (whichScore === "CF") {
+            if (indexCF >= 8) {
+                indexCF = 0;
+            }
+            if (indexCF === 0) {
+                clearScore();
+                clearTonalityMask();
+                setTonalityMask(Number(number) - 1, 0); // Means ("this note index", "is the root (= 0)")
+            }
+            if (((((Number(number) - CFNotes[0]) % 12) === 3) || (((CFNotes[0] - Number(number)) % 12) === 9)) && (tonalityMask[(CFNotes[0] + 2) % 36] !== 0)) {
+                setTonalityMask(Number(number) - 1, 3); // Means ("this note index", "is the minor 3rd") so it's a minor scale
+            }
+            if (((((Number(number) - CFNotes[0]) % 12) === 4) || (((CFNotes[0] - Number(number)) % 12) === 8)) && (tonalityMask[(CFNotes[0] + 3) % 36] !== 0)) {
+                setTonalityMask(Number(number) - 1, 4); // Means ("this note index", "is the major 3rd") so it's a major scale
+            }
+            writeNote(noteNames[Number(number) - 1], indexCF);
+            CFNotes[indexCF] = Number(number);
+            indexCF = indexCF + 1;
+            let currentAudio = new Audio(newUrl)
+            notePlayingCF = currentAudio;
+            currentAudio.play();
+        } else {
+            if (indexCTP >= 8) {
+                indexCTP = 0
+            }
+            if (indexCTP === 0) {
+                clearScore();
+            }
+            writeNote(noteNames[Number(number) - 1], indexCTP + 8);
+            CTPNotes[indexCTP] = Number(number);
+            indexCTP = indexCTP + 1;
+            let currentAudio = new Audio(newUrl)
+            notePlayingCTP = currentAudio;
+            currentAudio.play();
         }
-        if (((((Number(number) - CFNotes[0]) % 12) === 4) || (((CFNotes[0] - Number(number)) % 12) === 8)) && (tonalityMask[(CFNotes[0] + 3) % 36] !== 0)) {
-            setTonalityMask(Number(number)-1, 4); // Means ("this note index", "is the major 3rd") so it's a major scale
-        }
-        writeNote(noteNames[Number(number)-1], indexCF);
-        CFNotes[indexCF] = Number(number);
-        indexCF = indexCF + 1;
-        let currentAudio = new Audio(newUrl)
-        notePlayingCF = currentAudio;
-        currentAudio.play();
+        clearPossibilities();
     }
-    else {
-        if (indexCTP >= 8) {indexCTP = 0}
-        if (indexCTP === 0) {clearScore();}
-        writeNote(noteNames[Number(number)-1], indexCTP+8);
-        CTPNotes[indexCTP] = Number(number);
-        indexCTP = indexCTP + 1;
-        let currentAudio = new Audio(newUrl)
-        notePlayingCTP = currentAudio;
-        currentAudio.play();
-    }
+    else {alert("Wrong note!")}
 }
 
 // It plays the sound corresponding to the name of the note, and colours the corresponding key
@@ -256,15 +276,15 @@ function decreaseVolume(note) {
 // When you release the mouse, it clears all the keys
 function clearPossibilities() {
     pianoKeys.forEach(pianoKey => {
-        pianoKey.classList.remove("possible")
+        pianoKey.classList.remove("notPossible")
     })
 }
 
 // Here goes the rules for the choise of the next note (it add a colour)
 function newPossibilities(offset) {
     pianoKeys.forEach((pianoKey, i) => {
-        if (Math.abs(Number(offset)-i) < 4) {
-            pianoKey.classList.add("possible")
+        if (Math.abs(Number(offset)-i) > 3 || pianoKey.classList.contains("outOfTonality")) {
+            pianoKey.classList.add("notPossible")
         }
     })
 }
