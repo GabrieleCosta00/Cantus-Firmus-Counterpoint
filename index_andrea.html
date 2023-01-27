@@ -3,24 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Piano</title>
-    <link rel="stylesheet" href="stylesheet_andrea.css">
+    <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
 <div id="box">
-
-    <img src="images/Chiave_di_violino.png" alt="Chiave di Violino"
-         width="30px" height="70px" style="position: relative; left: 60px; top: -200px;">
-<!--
-    <img src="images/Chiave_di_basso.png" alt="Chiave di Basso"
-         width="30px" height="70px" style="position: relative; left: 60px; top: -100px;">
--->
-    <canvas id="canvas_score"
-            width="1015" height="300">
-    </canvas>
-
-    <!--
     <div class="Text">CANTUS FIRMUS</div>
-    <div id="scoreCF">
+    <div id="scoreCF" class="selectedScore">
         <div class="noteText"></div>
         <div class="noteText"></div>
         <div class="noteText"></div>
@@ -30,6 +18,7 @@
         <div class="noteText"></div>
         <div class="noteText"></div>
     </div>
+    <div class="spartito">Spartito CF</div>
     <div class="Text">COUNTERPOINT</div>
     <div id="scoreCTP">
         <div class="noteText"></div>
@@ -41,37 +30,52 @@
         <div class="noteText"></div>
         <div class="noteText"></div>
     </div>
-    -->
-
+    <div class="spartito">Spartito CTP</div>
     <div id="pianoKeys" class="keys">
-        <div class="key white-key"></div>
-        <div class="key black-key" style="left: 49px"></div>
-        <div class="key white-key"></div>
-        <div class="key black-key" style="left: 117px"></div>
-        <div class="key white-key"></div>
-        <div class="key white-key"></div>
-        <div class="key black-key" style="left: 253px"></div>
-        <div class="key white-key"></div>
-        <div class="key black-key" style="left: 321px"></div>
-        <div class="key white-key"></div>
-        <div class="key black-key" style="left: 389px"></div>
-        <div class="key white-key"></div>
-        <div class="key white-key"></div>
-        <div class="key black-key" style="left: 525px"></div>
-        <div class="key white-key"></div>
-        <div class="key black-key" style="left: 593px"></div>
-        <div class="key white-key"></div>
-        <div class="key white-key"></div>
-        <div class="key black-key" style="left: 729px"></div>
-        <div class="key white-key"></div>
-        <div class="key black-key" style="left: 797px"></div>
-        <div class="key white-key"></div>
-        <div class="key black-key" style="left: 865px"></div>
-        <div class="key white-key"></div>
-        <div class="key white-key"></div>
+        <div class="key white-key">z</div>
+        <div class="key black-key">s</div>
+        <div class="key white-key">x</div>
+        <div class="key black-key">d</div>
+        <div class="key white-key">c</div>
+        <div class="key white-key">v</div>
+        <div class="key black-key">g</div>
+        <div class="key white-key">b</div>
+        <div class="key black-key">h</div>
+        <div class="key white-key">n</div>
+        <div class="key black-key">j</div>
+        <div class="key white-key">m</div>
+        <div class="key white-key">,</div>
+        <div class="key black-key">l</div>
+        <div class="key white-key">.</div>
+        <div class="key black-key">ò</div>
+        <div class="key white-key">-</div>
+        <div class="key white-key">q</div>
+        <div class="key black-key">2</div>
+        <div class="key white-key">w</div>
+        <div class="key black-key">3</div>
+        <div class="key white-key">e</div>
+        <div class="key black-key">4</div>
+        <div class="key white-key">r</div>
+        <div class="key white-key">t</div>
+        <div class="key black-key">6</div>
+        <div class="key white-key">y</div>
+        <div class="key black-key">7</div>
+        <div class="key white-key">u</div>
+        <div class="key white-key">i</div>
+        <div class="key black-key">9</div>
+        <div class="key white-key">o</div>
+        <div class="key black-key">0</div>
+        <div class="key white-key">p</div>
+        <div class="key black-key">'</div>
+        <div class="key white-key">è</div>
+        <!--            <div class="key white-key">+</div>  -->
+    </div>
+    <div id="transport">
+        <div class="play transportButton" onclick="transportPlay()">PLAY</div>
+        <div class="stop transportButton" onclick="transportStop()">STOP</div>
     </div>
 </div>
-<script src="https://github.com/Tonejs/Tone.js/"></script>
-<script src="index_andrea.js"></script>
+<script src="http://unpkg.com/tone"></script>
+<script src="index.js"></script>
 </body>
 </html>

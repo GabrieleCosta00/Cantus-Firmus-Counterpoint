@@ -5,45 +5,63 @@ body {
     justify-content: center;
     height: 100vh;
     align-items: center;
+    background-color: darkgrey;
 }
 
 .Text {
     text-justify: distribute;
     text-align: center;
-    padding:  20px 0 20px 0;
+    padding:  15px 0 5px 0;
 }
 
 #box {
-    height: 580px;
-    padding: 30px 30px 30px 30px;
-    background-color: rgba(89, 47, 11, 0.53);
+    height: 650px;
+    padding: 20px 20px 20px 20px;
+    background-color: rgba(131, 81, 48, 0.53);
     border-radius: 10px;
+    justify-items: center;
 }
 
 #scoreCF {
-    width: 1020px;
-    height: 80px;
+    width: 1070px;
+    height: 40px;
     border-radius: 10px;
     background-color: coral;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 5px;
+    box-sizing: border-box;
 }
 
 #scoreCTP {
-    width: 1020px;
-    height: 80px;
+    width: 1070px;
+    height: 40px;
     border-radius: 10px;
     background-color: #f1dc8f;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+}
+
+.spartito {
+    background-color: #e0ccbd;
+    text-align: center;
+    padding-top: 33px;
+    border-radius: 10px;
+    width: 1070px;
+    height: 60px;
 }
 
 .noteText {
     padding: 0 55px 0 55px;
     cursor: pointer;
+}
+
+#pianoKeys {
+    padding-top: 25px;
 }
 
 .keys {
@@ -52,29 +70,84 @@ body {
 }
 
 .key {
-    width: 68px;
-    height: 280px;
+    width: 51px;
+    height: 190px;
     position: relative;
     background-color: #fff;
     border-radius: 0 0 5px 5px;
     border: solid #000 2px;
     box-sizing: border-box;
     cursor: pointer;
+    text-align: center;
+    padding-top: 160px;
 }
 
 .black-key {
-    width: 38px;
-    height: 160px;
+    width: 29px;
+    height: 108px;
     position: absolute;
     background-color: #000;
     border-radius: 0 0 5px 5px;
     z-index: 9;
+    text-align: center;
+    color: white;
+    padding-top: 80px;
 }
 
-.possible {
-    background-color: aqua;
+.notPossible {
+    background-color: #424242;
+}
+
+.outOfTonality {
+    background-color: #424242;
+}
+
+.writtenOnCFScore {
+    background-color: #ff7f50;
+}
+
+.writtenOnCTPScore {
+    background-color: #f1dc8f;
 }
 
 .writtenOnScore {
-    background-color: #7fff85;
+    background-color: #46bd5f;
+}
+
+.selectedScore {
+    border: solid #000 2px;
+}
+
+#transport {
+    display: flex;
+    margin: 25px 0 25px 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.transportButton {
+    margin: 0 10px 0 10px;
+    border: solid black 2px;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.playSelected {
+    background-color: #09b04c;
+}
+
+.stopSelected {
+    background-color: #d90000;
+}
+
+.play {
+    background-color: mediumseagreen;
+}
+
+.stop {
+    background-color: #c42e2e;
 }
