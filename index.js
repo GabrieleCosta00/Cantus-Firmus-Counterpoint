@@ -124,9 +124,10 @@ function converter(ch) {
 
 // It plays the sound you chosen on the keyboard and write it in the CF/CTP (in both the box and the vector of notes), based on which you have chosen
 function playSoundAndWrite(newUrl, number) {
+    let ctp = false
     if (whichScore === "CF") {
         if (indexCF >= 8) {indexCF = 0;}
-        writeNote(number, noteNames[Number(number)-1], indexCF);
+        writeNote(number, noteNames[Number(number)-1], indexCF, ctp);
         CFNotes[indexCF] = Number(number);
         indexCF = indexCF + 1;
         let currentAudio = new Audio(newUrl)
@@ -134,8 +135,9 @@ function playSoundAndWrite(newUrl, number) {
         currentAudio.play();
     }
     else {
+        ctp = true
         if (indexCTP >= 8) {indexCTP = 0}
-        writeNote(number, noteNames[Number(number)-1], indexCTP+8);
+        writeNote(number, noteNames[Number(number)-1], indexCTP+8, ctp);
         CTPNotes[indexCTP] = Number(number);
         indexCTP = indexCTP + 1;
         let currentAudio = new Audio(newUrl)
@@ -208,11 +210,11 @@ function newPossibilities(offset) {
 }
 
 // It writes the note you played in the CF/CTP tabs
-function writeNote(number, note, index) {
+function writeNote(number, note, index, ctp) {
     noteTexts.forEach((text, i) => {
         if (i === index) {text.innerHTML = note;}
     })
-    drawNote(number, index)
+    drawNote(number, index % 8, ctp)
 }
 
 // When you want you listen the notes of the CF/CTP, you can click them...
@@ -257,9 +259,9 @@ function transportStop() {
     currentTransport = 0;
 }
 
-var canvas = document.getElementById("canvas_score");
-var ctx = canvas.getContext("2d");
-ctx.fillStyle = "#000000";
+//Functions that write on the pentagramma.
+const canvas = document.getElementById("canvas_score");
+const ctx = canvas.getContext("2d");
 
 ctx.fillRect(20, 40, 920, 1);
 ctx.fillRect(20, 56, 920, 1);
@@ -278,14 +280,14 @@ const yCoordinatesHigherStave = [120, 0, 112, 0, 104, 96, 0, 88, 0, 80, 0, 72, 6
     56, 0, 48, 40, 0, 32, 0, 24, 0, 16, 8]
 const yCoordinatesLowerStave = [190, 0, 182, 0, 174, 166, 0, 158, 0, 150, 0, 142]
 
-function drawNote(number, index) {
+function drawNote(number, index, ctp) {
     let x = 100 + 100 * index
     let y
     if (number > 12) {
         number = number - 13
         if (alteredNotes.includes(number)) {
             y = yCoordinatesHigherStave[number - 1]
-            drawSharp(x, y)
+            drawSharp(x, y, ctp)
         }
         else
             y = yCoordinatesHigherStave[number]
@@ -296,19 +298,27 @@ function drawNote(number, index) {
         number = number - 1
         if (alteredNotes.includes(number)) {
             y = yCoordinatesLowerStave[number - 1]
-            drawSharp(x, y)
+            drawSharp(x, y, ctp)
         }
         else
             y = yCoordinatesLowerStave[number]
     }
+    if (ctp)
+        ctx.strokeStyle = "rgb(255, 255, 255)"
+    else
+        ctx.strokeStyle = "rgb(0, 0, 0)"
     ctx.beginPath()
     ctx.arc(x, y, 8, 0, 2 * Math.PI)
     ctx.stroke()
 }
 
-function drawSharp(x, y) {
+function drawSharp(x, y, ctp) {
     x = x - 20
     y = y - 6
+    if (ctp)
+        ctx.fillStyle = "rgb(255, 255, 255)"
+    else
+        ctx.fillStyle = "rgb(0, 0, 0)"
     ctx.fillRect(x, y, 1, 15)
     ctx.fillRect(x+5, y-2, 1, 15)
     ctx.fillRect(x-3, y+3, 11, 1)
