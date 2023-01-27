@@ -283,8 +283,16 @@ function clearPossibilities() {
 // Here goes the rules for the choise of the next note (it add a colour)
 function newPossibilities(offset) {
     pianoKeys.forEach((pianoKey, i) => {
-        if (Math.abs(Number(offset)-i) > 3 || pianoKey.classList.contains("outOfTonality")) {
-            pianoKey.classList.add("notPossible")
+        // TODO: here goes the conditions for NOT good notes
+        if (whichScore === "CF") {  // Here the CF's conditions
+            if (Math.abs(Number(offset)-i) > 3 || pianoKey.classList.contains("outOfTonality")) {
+                pianoKey.classList.add("notPossible")
+            }
+        }
+        else {  // Here the CTP's conditions
+            if (Math.abs(Number(offset)-i) > 3 || pianoKey.classList.contains("outOfTonality")) {
+                pianoKey.classList.add("notPossible")
+            }
         }
     })
 }
