@@ -291,8 +291,19 @@ function drawNote(number, index, ctp) {
         }
         else
             y = yCoordinatesHigherStave[number]
+        if (ctp)
+            ctx.fillStyle = "rgb(255, 255, 255)"
+        else
+            ctx.fillStyle = "rgb(0, 0, 0)"
         if (number < 2)
             ctx.fillRect(x-12, y, 24, 2)
+        if (number >= 21 && number <= 22)
+            ctx.fillRect(x-12, y, 24, 2)
+        if (number > 22) {
+            ctx.fillRect(x-12, y+10, 24, 2)
+            if (number > 23)
+                ctx.fillRect(x-12, y, 24, 2)
+        }
     }
     else {
         number = number - 1
