@@ -315,13 +315,16 @@ function newPossibilities(offset) {
             // TODO: here goes the conditions for NOT good notes
             if (whichScore === "CF") {  // Here the CF's conditions
                 if (indexCF === 6) {
-                    if (i !== (CFNotes[0] + 1)) {pianoKey.classList.add("notPossible")}
-                    // Aggiungere %12 sia a i che a (CFNotes[0] + 1) per aggiungere anche le altre ottave come possibili soluzioni
+                    if ((i !== (CFNotes[0] + 1)) && (i !== ((CFNotes[0] + 13) % 36)) && (i !== ((CFNotes[0] + 25) % 36))) {
+                        pianoKey.classList.add("notPossible")
+                    } // La penultima nota può essere solo il secondo grado
+                    if (i === 0 || i === 1) {pianoKey.classList.add("notPossible")} // Non posso concludere scendendo se sono già a fondo tastiera
                 }
                 else {
                     if (indexCF === 7) {
-                        if (i !== (CFNotes[0] - 1)) {pianoKey.classList.add("notPossible")}
-                        // Aggiungere %12 sia a i che a (CFNotes[0] + 1) per aggiungere anche le altre ottave come possibili soluzioni
+                        if (i !== (CFNotes[6] - 3)) {
+                            pianoKey.classList.add("notPossible")
+                        } // L'ultima nota può essere solo la tonica
                     } else {
                         if (Math.abs(Number(offset) - i) > 12 ||  // Salti non più larghi di un'ottava
                             // Rispetto alla nota più alta o più bassa suonata non può essere più lontano di 16 ST
