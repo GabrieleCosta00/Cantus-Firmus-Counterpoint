@@ -352,25 +352,25 @@ function transportStop() {
 // Write on the pentagramma.
 const canvas = document.getElementById("canvas_score");
 const ctx = canvas.getContext("2d");
+const yHighestLine = 30
+const noteGap = 7
 
 function drawStaves() {
-    ctx.fillRect(20, 40, 920, 1);
-    ctx.fillRect(20, 56, 920, 1);
-    ctx.fillRect(20, 72, 920, 1);
-    ctx.fillRect(20, 88, 920, 1);
-    ctx.fillRect(20, 104, 920, 1);
-
-    ctx.fillRect(20, 150, 920, 1);
-    ctx.fillRect(20, 166, 920, 1);
-    ctx.fillRect(20, 182, 920, 1);
-    ctx.fillRect(20, 198, 920, 1);
-    ctx.fillRect(20, 214, 920, 1);
+    for (let i=0; i<5; i++)
+        ctx.fillRect(20, yHighestLine + (i*(noteGap*2)), 920, 1)
+    for (let i=0; i<5; i++)
+        ctx.fillRect(20, yHighestLine + 100 + (i*(noteGap*2)), 920, 1)
 }
 
 const alteredNotes = [1, 3, 6, 8, 10, 13, 15, 18, 20, 22]
-const yCoordinatesHigherStave = [120, 0, 112, 0, 104, 96, 0, 88, 0, 80, 0, 72, 64, 0,
-    56, 0, 48, 40, 0, 32, 0, 24, 0, 16, 8]
-const yCoordinatesLowerStave = [190, 0, 182, 0, 174, 166, 0, 158, 0, 150, 0, 142]
+let yCoordinatesHigherStave = [yHighestLine+noteGap*10, 0, yHighestLine+noteGap*9, 0,
+    yHighestLine+noteGap*8, yHighestLine+noteGap*7, 0, yHighestLine+noteGap*6, 0,
+    yHighestLine+noteGap*5, 0, yHighestLine+noteGap*4, yHighestLine+noteGap*3, 0,
+    yHighestLine+noteGap*2, 0, yHighestLine+noteGap, yHighestLine, 0, yHighestLine-noteGap,
+    0, yHighestLine-noteGap*2, 0, yHighestLine-noteGap*3, yHighestLine-noteGap*4]
+let yCoordinatesLowerStave = [yHighestLine+100+noteGap*5, 0, yHighestLine+100+noteGap*4, 0,
+    yHighestLine+100+noteGap*3, yHighestLine+100+noteGap*2, 0, yHighestLine+100+noteGap, 0,
+    yHighestLine+100, 0, yHighestLine+100-noteGap]
 
 function drawNote(number, index, ctp) {
     ctx.fillStyle = "rgb(0, 0, 0)"
@@ -396,13 +396,13 @@ function drawNote(number, index, ctp) {
         else
             ctx.fillStyle = "rgb(0, 0, 0)"
         if (number < 2)
-            ctx.fillRect(x-12, y, 24, 2)
+            ctx.fillRect(x-(noteGap*3/2), y, noteGap*3, noteGap/6)
         if (number >= 21 && number <= 22)
-            ctx.fillRect(x-12, y, 24, 2)
+            ctx.fillRect(x-(noteGap*3/2), y, noteGap*3, noteGap/6)
         if (number > 22) {
-            ctx.fillRect(x-12, y+10, 24, 2)
+            ctx.fillRect(x-(noteGap*3/2), y+noteGap, noteGap*3, noteGap/6)
             if (number > 23)
-                ctx.fillRect(x-12, y, 24, 2)
+                ctx.fillRect(x-(noteGap*3/2), y, noteGap*3, noteGap/6)
         }
     }
     else {
@@ -419,7 +419,7 @@ function drawNote(number, index, ctp) {
     else
         ctx.strokeStyle = "rgb(0, 0, 0)"
     ctx.beginPath()
-    ctx.arc(x, y, 8, 0, 2 * Math.PI)
+    ctx.arc(x, y, noteGap, 0, 2 * Math.PI)
     ctx.stroke()
 }
 
