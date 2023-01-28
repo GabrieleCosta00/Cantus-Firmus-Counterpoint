@@ -95,11 +95,11 @@ body {
 }
 
 .notPossible {
-    background-color: #424242;
+    background-color: #770000;
 }
 
 .outOfTonality {
-    background-color: #424242;
+    /*background-color: #770000;*/
 }
 
 .writtenOnCFScore {
