@@ -408,10 +408,12 @@ const noteGap = 7
 
 function drawStaves() {
     for (let i=0; i<5; i++)
-        ctx.fillRect(20, yHighestLine + (i*(noteGap*2)), 920, 1)
+        ctx.fillRect(0, yHighestLine + (i*(noteGap*2)), 920, 1)
     for (let i=0; i<5; i++)
-        ctx.fillRect(20, yHighestLine + 100 + (i*(noteGap*2)), 920, 1)
+        ctx.fillRect(0, yHighestLine + 100 + (i*(noteGap*2)), 920, 1)
 }
+
+drawStaves()
 
 const alteredNotes = [1, 3, 6, 8, 10, 13, 15, 18, 20, 22]
 let yCoordinatesHigherStave = [yHighestLine+noteGap*10, 0, yHighestLine+noteGap*9, 0,
