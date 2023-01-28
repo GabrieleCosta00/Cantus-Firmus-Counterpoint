@@ -215,16 +215,16 @@ function playWriteClearPoss(newUrl, number) {
                 setTonalityMask(Number(number) - 1, 4); // Means ("this note index", "is the major 3rd") so it's a major scale
             }
             if (((((Number(number) - CFNotes[0]) % 12) === 8) || (((CFNotes[0] - Number(number)) % 12) === 4)) && (tonalityMask[(CFNotes[0] + 7) % 36] !== 0)) {
-                setTonalityMask(Number(number) - 1, 8); // Means ("this note index", "is the major 3rd") so it's a major scale
+                setTonalityMask(Number(number) - 1, 8); // Means ("this note index", "is the minor 6th") so it's a minor scale
             }
             if (((((Number(number) - CFNotes[0]) % 12) === 9) || (((CFNotes[0] - Number(number)) % 12) === 3)) && (tonalityMask[(CFNotes[0] + 8) % 36] !== 0)) {
-                setTonalityMask(Number(number) - 1, 9); // Means ("this note index", "is the major 3rd") so it's a major scale
+                setTonalityMask(Number(number) - 1, 9); // Means ("this note index", "is the major 6th") so it's a major scale
             }
             if (((((Number(number) - CFNotes[0]) % 12) === 10) || (((CFNotes[0] - Number(number)) % 12) === 2)) && (tonalityMask[(CFNotes[0] + 9) % 36] !== 0)) {
-                setTonalityMask(Number(number) - 1, 10); // Means ("this note index", "is the major 3rd") so it's a major scale
+                setTonalityMask(Number(number) - 1, 10); // Means ("this note index", "is the minor 7th") so it's a minor scale
             }
             if (((((Number(number) - CFNotes[0]) % 12) === 11) || (((CFNotes[0] - Number(number)) % 12) === 1)) && (tonalityMask[(CFNotes[0] + 10) % 36] !== 0)) {
-                setTonalityMask(Number(number) - 1, 11); // Means ("this note index", "is the major 3rd") so it's a major scale
+                setTonalityMask(Number(number) - 1, 11); // Means ("this note index", "is the major 7th") so it's a major scale
             }
             writeNote(noteNames[Number(number) - 1], indexCF);
             CFNotes[indexCF] = Number(number);
@@ -306,35 +306,42 @@ function clearPossibilities() {
 
 // Here goes the rules for the choise of the next note (it add a colour)
 function newPossibilities(offset) {
-    pianoKeys.forEach((pianoKey, i) => {
-        // TODO: here goes the conditions for NOT good notes
-        // TODO: aggiornare tutte le possibilità quando si arriva sull'ultima nota del CF
-        // TODO: implementare la condizione che al momento ha "0" (riga 301)
-        if (whichScore === "CF") {  // Here the CF's conditions
-            if (indexCF === 6) {
-                if (i !== (CFNotes[0] + 1)) {pianoKey.classList.add("notPossible")}
-            }
-            else {
-                if (indexCF === 7) {
-                    if (i !== (CFNotes[0] - 1)) {
-                        pianoKey.classList.add("notPossible")
-                    }
-                } else {
-                    if (Math.abs(Number(offset) - i) > 12 ||  // Salti non più larghi di un'ottava
-                        0 || // Rispetto alla nota più alta o più bassa suonata non può essere più lontano di 16 ST
-                        Math.abs(Number(offset) - i) === 0 || // Non si possono ripetere le stesse note
-                        pianoKey.classList.contains("outOfTonality")) {
-                        pianoKey.classList.add("notPossible")
+    if (indexCF === 8) {
+        clearTonalityMask();
+        clearPossibilities();
+    }
+    else {
+        pianoKeys.forEach((pianoKey, i) => {
+            // TODO: here goes the conditions for NOT good notes
+            if (whichScore === "CF") {  // Here the CF's conditions
+                if (indexCF === 6) {
+                    if (i !== (CFNotes[0] + 1)) {pianoKey.classList.add("notPossible")}
+                    // Aggiungere %12 sia a i che a (CFNotes[0] + 1) per aggiungere anche le altre ottave come possibili soluzioni
+                }
+                else {
+                    if (indexCF === 7) {
+                        if (i !== (CFNotes[0] - 1)) {pianoKey.classList.add("notPossible")}
+                        // Aggiungere %12 sia a i che a (CFNotes[0] + 1) per aggiungere anche le altre ottave come possibili soluzioni
+                    } else {
+                        if (Math.abs(Number(offset) - i) > 12 ||  // Salti non più larghi di un'ottava
+                            // Rispetto alla nota più alta o più bassa suonata non può essere più lontano di 16 ST
+                            (Math.max(...CFNotes) - i) > 15 || // Considero 2 in meno (15 invece di 17) perché dovrò concludere con 2 -> 1
+                            (i - Math.min(...(CFNotes.filter(a => a !== 0)))) > 15 || // Tolgo gli 0.
+                            Math.abs(Number(offset) - i) === 0 || // Non si possono ripetere le stesse note
+                            pianoKey.classList.contains("outOfTonality")) {
+                            pianoKey.classList.add("notPossible")
+                        }
                     }
                 }
             }
-        }
-        else {  // Here the CTP's conditions
-            if (Math.abs(Number(offset)-i) > 3 || pianoKey.classList.contains("outOfTonality")) {
-                pianoKey.classList.add("notPossible")
+            else {  // Here the CTP's conditions
+                if (Math.abs(Number(offset)-i) > 3 || pianoKey.classList.contains("outOfTonality")) {
+                    pianoKey.classList.add("notPossible")
+                }
             }
-        }
-    })
+        })
+    }
+
 }
 
 // It writes the note you played in the CF/CTP tabs
