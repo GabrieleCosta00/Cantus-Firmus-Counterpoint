@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Piano</title>
-    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="stylesheet_andrea.css">
 </head>
 <body>
 <div id="box">
@@ -18,7 +18,10 @@
         <div class="noteText"></div>
         <div class="noteText"></div>
     </div>
-    <div class="spartito">Spartito CF</div>
+    <canvas id="canvas_score"
+            width="1015" height="200"
+            style="position: relative; left: 80px; top: 10px;">
+    </canvas>
     <div class="Text">COUNTERPOINT</div>
     <div id="scoreCTP">
         <div class="noteText"></div>
@@ -30,7 +33,6 @@
         <div class="noteText"></div>
         <div class="noteText"></div>
     </div>
-    <div class="spartito">Spartito CTP</div>
     <div id="pianoKeys" class="keys">
         <div class="key white-key">z</div>
         <div class="key black-key">s</div>
@@ -76,6 +78,6 @@
     </div>
 </div>
 <script src="http://unpkg.com/tone"></script>
-<script src="index.js"></script>
+<script src="index_andrea.js"></script>
 </body>
 </html>
