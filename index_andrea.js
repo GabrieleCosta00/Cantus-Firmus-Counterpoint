@@ -416,14 +416,31 @@ function drawStaves() {
 drawStaves()
 
 const alteredNotes = [1, 3, 6, 8, 10, 13, 15, 18, 20, 22]
-let yCoordinatesHigherStave = [yHighestLine+noteGap*10, 0, yHighestLine+noteGap*9, 0,
-    yHighestLine+noteGap*8, yHighestLine+noteGap*7, 0, yHighestLine+noteGap*6, 0,
-    yHighestLine+noteGap*5, 0, yHighestLine+noteGap*4, yHighestLine+noteGap*3, 0,
-    yHighestLine+noteGap*2, 0, yHighestLine+noteGap, yHighestLine, 0, yHighestLine-noteGap,
-    0, yHighestLine-noteGap*2, 0, yHighestLine-noteGap*3, yHighestLine-noteGap*4]
-let yCoordinatesLowerStave = [yHighestLine+100+noteGap*5, 0, yHighestLine+100+noteGap*4, 0,
-    yHighestLine+100+noteGap*3, yHighestLine+100+noteGap*2, 0, yHighestLine+100+noteGap, 0,
-    yHighestLine+100, 0, yHighestLine+100-noteGap]
+let yCoordinatesHigherStave = []
+let yCoordinatesLowerStave = []
+
+function initializeStaves() {
+    let i = 10
+    while (i >= -4) {
+        if (alteredNotes.includes(yCoordinatesHigherStave.length))
+            yCoordinatesHigherStave.push(0)
+        else {
+            yCoordinatesHigherStave.push(yHighestLine + (noteGap * i))
+            i = i - 1
+        }
+    }
+    i = 5
+    while (i >= -1) {
+        if (alteredNotes.includes(yCoordinatesLowerStave.length))
+            yCoordinatesLowerStave.push(0)
+        else {
+            yCoordinatesLowerStave.push(yHighestLine + 100 + (noteGap * i))
+            i = i - 1
+        }
+    }
+}
+
+initializeStaves()
 
 function drawNote(number, index, ctp) {
     ctx.fillStyle = "rgb(0, 0, 0)"
