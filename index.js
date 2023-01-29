@@ -461,7 +461,7 @@ function drawNote(number, index, ctp) {
         if (ctp)
             ctx.fillStyle = "rgb(255, 255, 255)"
         else
-            ctx.fillStyle = "rgb(0, 0, 0)"
+            ctx.fillStyle = "rgb(0,0,0)"
         if (number < 2)
             ctx.fillRect(x-(noteGap*3/2), y, noteGap*3, noteGap/6)
         if (number >= 21 && number <= 22)
@@ -484,9 +484,10 @@ function drawNote(number, index, ctp) {
     if (ctp)
         ctx.strokeStyle = "rgb(255, 255, 255)"
     else
-        ctx.strokeStyle = "rgb(0, 0, 0)"
+        ctx.strokeStyle = "rgb(0,0,0)"
     ctx.beginPath()
     ctx.arc(x, y, noteGap, 0, 2 * Math.PI)
+    ctx.lineWidth = 1.5;
     ctx.stroke()
 }
 
@@ -496,7 +497,7 @@ function drawSharp(x, y, ctp) {
     if (ctp)
         ctx.fillStyle = "rgb(255, 255, 255)"
     else
-        ctx.fillStyle = "rgb(0, 0, 0)"
+        ctx.fillStyle = "rgb(0,0,0)"
     ctx.fillRect(x, y, 1, 15)
     ctx.fillRect(x+5, y-2, 1, 15)
     ctx.fillRect(x-3, y+3, 11, 1)
