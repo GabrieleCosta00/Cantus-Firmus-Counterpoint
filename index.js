@@ -198,6 +198,8 @@ function playWriteClearPoss(newUrl, number) {
     })
 
     // ... and then...
+    //TODO: ctp è un flag che serve per distinguere tra CF e CTP
+    let ctp = false
     if (goodNote === 1) {
         if (whichScore === "CF") {
             if (indexCF >= 8) {
@@ -226,20 +228,26 @@ function playWriteClearPoss(newUrl, number) {
             if (((((Number(number) - CFNotes[0]) % 12) === 11) || (((CFNotes[0] - Number(number)) % 12) === 1)) && (tonalityMask[(CFNotes[0] + 10) % 36] !== 0)) {
                 setTonalityMask(Number(number) - 1, 11); // Means ("this note index", "is the major 7th") so it's a major scale
             }
-            writeNote(noteNames[Number(number) - 1], indexCF);
+            //TODO: ho aggiunto alla funzione writeNote anche il flag ctp e il number, per facilitare la scrittura su
+            //pentagramma.
+            writeNote(number, noteNames[Number(number) - 1], indexCF, ctp);
             CFNotes[indexCF] = Number(number);
             indexCF = indexCF + 1;
             let currentAudio = new Audio(newUrl)
             notePlayingCF = currentAudio;
             currentAudio.play();
         } else {
+            //TODO: ricorda ctp
+            ctp = true
             if (indexCTP >= 8) {
                 indexCTP = 0
             }
             if (indexCTP === 0) {
                 clearScore();
             }
-            writeNote(noteNames[Number(number) - 1], indexCTP + 8);
+            //TODO: ho aggiunto alla funzione writeNote anche il flag ctp e il number, per facilitare la scrittura su
+            //pentagramma.
+            writeNote(number, noteNames[Number(number) - 1], indexCTP + 8, ctp);
             CTPNotes[indexCTP] = Number(number);
             indexCTP = indexCTP + 1;
             let currentAudio = new Audio(newUrl)
@@ -348,10 +356,13 @@ function newPossibilities(offset) {
 }
 
 // It writes the note you played in the CF/CTP tabs
-function writeNote(note, index) {
+//TODO: prende quei due parametri in più che mi servono per scrivere su pentagramma.
+function writeNote(number, note, index, ctp) {
     noteTexts.forEach((text, i) => {
         if (i === index) {text.innerHTML = note;}
     })
+    //TODO: ecco che chiama la funzione.
+    drawNote(number, index % 8, ctp)
 }
 
 // When you want you listen the notes of the CF/CTP, you can click them...
@@ -394,4 +405,111 @@ function transportStop() {
     stopSound();
     isPlaying = false;
     currentTransport = 0;
+}
+
+//TODO: qui c'è tutto il nuovo codice.
+// Write on the pentagramma.
+const canvas = document.getElementById("canvas_score");
+const ctx = canvas.getContext("2d");
+const yHighestLine = 30
+const noteGap = 7
+
+function drawStaves() {
+    for (let i=0; i<5; i++)
+        ctx.fillRect(0, yHighestLine + (i*(noteGap*2)), 920, 1)
+    for (let i=0; i<5; i++)
+        ctx.fillRect(0, yHighestLine + 100 + (i*(noteGap*2)), 920, 1)
+}
+
+drawStaves()
+
+const alteredNotes = [1, 3, 6, 8, 10, 13, 15, 18, 20, 22]
+let yCoordinatesHigherStave = []
+let yCoordinatesLowerStave = []
+
+function initializeStaves() {
+    let i = 10
+    while (i >= -4) {
+        if (alteredNotes.includes(yCoordinatesHigherStave.length))
+            yCoordinatesHigherStave.push(0)
+        else {
+            yCoordinatesHigherStave.push(yHighestLine + (noteGap * i))
+            i = i - 1
+        }
+    }
+    i = 5
+    while (i >= -1) {
+        if (alteredNotes.includes(yCoordinatesLowerStave.length))
+            yCoordinatesLowerStave.push(0)
+        else {
+            yCoordinatesLowerStave.push(yHighestLine + 100 + (noteGap * i))
+            i = i - 1
+        }
+    }
+}
+
+initializeStaves()
+
+function drawNote(number, index, ctp) {
+    ctx.fillStyle = "rgb(0, 0, 0)"
+    if (index === 0) {
+        ctx.clearRect(0, 0, 1015, 200)
+        drawStaves()
+        if (ctp)
+            for (let i=0; i<CFNotes.length; i++)
+                drawNote(CFNotes[i], i,false)
+    }
+    let x = 100 + 100 * index
+    let y
+    if (number > 12) {
+        number = number - 13
+        if (alteredNotes.includes(number)) {
+            y = yCoordinatesHigherStave[number - 1]
+            drawSharp(x, y, ctp)
+        }
+        else
+            y = yCoordinatesHigherStave[number]
+        if (ctp)
+            ctx.fillStyle = "rgb(255, 255, 255)"
+        else
+            ctx.fillStyle = "rgb(0, 0, 0)"
+        if (number < 2)
+            ctx.fillRect(x-(noteGap*3/2), y, noteGap*3, noteGap/6)
+        if (number >= 21 && number <= 22)
+            ctx.fillRect(x-(noteGap*3/2), y, noteGap*3, noteGap/6)
+        if (number > 22) {
+            ctx.fillRect(x-(noteGap*3/2), y+noteGap, noteGap*3, noteGap/6)
+            if (number > 23)
+                ctx.fillRect(x-(noteGap*3/2), y, noteGap*3, noteGap/6)
+        }
+    }
+    else {
+        number = number - 1
+        if (alteredNotes.includes(number)) {
+            y = yCoordinatesLowerStave[number - 1]
+            drawSharp(x, y, ctp)
+        }
+        else
+            y = yCoordinatesLowerStave[number]
+    }
+    if (ctp)
+        ctx.strokeStyle = "rgb(255, 255, 255)"
+    else
+        ctx.strokeStyle = "rgb(0, 0, 0)"
+    ctx.beginPath()
+    ctx.arc(x, y, noteGap, 0, 2 * Math.PI)
+    ctx.stroke()
+}
+
+function drawSharp(x, y, ctp) {
+    x = x - 20
+    y = y - 6
+    if (ctp)
+        ctx.fillStyle = "rgb(255, 255, 255)"
+    else
+        ctx.fillStyle = "rgb(0, 0, 0)"
+    ctx.fillRect(x, y, 1, 15)
+    ctx.fillRect(x+5, y-2, 1, 15)
+    ctx.fillRect(x-3, y+3, 11, 1)
+    ctx.fillRect(x-3, y+8, 11, 1)
 }
