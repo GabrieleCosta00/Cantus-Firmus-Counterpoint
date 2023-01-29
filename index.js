@@ -198,8 +198,6 @@ function playWriteClearPoss(newUrl, number) {
     })
 
     // ... and then...
-    //TODO: ctp è un flag che serve per distinguere tra CF e CTP
-    let ctp = false
     if (goodNote === 1) {
         if (whichScore === "CF") {
             if (indexCF >= 8) {
@@ -228,26 +226,20 @@ function playWriteClearPoss(newUrl, number) {
             if (((((Number(number) - CFNotes[0]) % 12) === 11) || (((CFNotes[0] - Number(number)) % 12) === 1)) && (tonalityMask[(CFNotes[0] + 10) % 36] !== 0)) {
                 setTonalityMask(Number(number) - 1, 11); // Means ("this note index", "is the major 7th") so it's a major scale
             }
-            //TODO: ho aggiunto alla funzione writeNote anche il flag ctp e il number, per facilitare la scrittura su
-            //pentagramma.
-            writeNote(number, noteNames[Number(number) - 1], indexCF, ctp);
+            writeNote(number, noteNames[Number(number) - 1], indexCF, (whichScore !== "CF"));
             CFNotes[indexCF] = Number(number);
             indexCF = indexCF + 1;
             let currentAudio = new Audio(newUrl)
             notePlayingCF = currentAudio;
             currentAudio.play();
         } else {
-            //TODO: ricorda ctp
-            ctp = true
             if (indexCTP >= 8) {
                 indexCTP = 0
             }
             if (indexCTP === 0) {
                 clearScore();
             }
-            //TODO: ho aggiunto alla funzione writeNote anche il flag ctp e il number, per facilitare la scrittura su
-            //pentagramma.
-            writeNote(number, noteNames[Number(number) - 1], indexCTP + 8, ctp);
+            writeNote(number, noteNames[Number(number) - 1], indexCTP + 8, (whichScore !== "CF"));
             CTPNotes[indexCTP] = Number(number);
             indexCTP = indexCTP + 1;
             let currentAudio = new Audio(newUrl)
@@ -352,16 +344,14 @@ function newPossibilities(offset) {
             }
         })
     }
-
 }
 
-// It writes the note you played in the CF/CTP tabs
-//TODO: prende quei due parametri in più che mi servono per scrivere su pentagramma.
+// It writes the note you played in the CF/CTP tabs + pentagramma
 function writeNote(number, note, index, ctp) {
     noteTexts.forEach((text, i) => {
         if (i === index) {text.innerHTML = note;}
     })
-    //TODO: ecco che chiama la funzione.
+    // chiama la funzione che scrive sul pentagramma.
     drawNote(number, index % 8, ctp)
 }
 
@@ -407,8 +397,7 @@ function transportStop() {
     currentTransport = 0;
 }
 
-//TODO: qui c'è tutto il nuovo codice.
-// Write on the pentagramma.
+// SCRITTURA SU PENTAGRAMMA
 const canvas = document.getElementById("canvas_score");
 const ctx = canvas.getContext("2d");
 const yHighestLine = 30
@@ -459,7 +448,7 @@ function drawNote(number, index, ctp) {
             for (let i=0; i<CFNotes.length; i++)
                 drawNote(CFNotes[i], i,false)
     }
-    let x = 100 + 100 * index
+    let x = 150 + 100 * index
     let y
     if (number > 12) {
         number = number - 13
