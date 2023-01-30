@@ -327,6 +327,9 @@ function newPossibilities(offset) {
                         } // L'ultima nota può essere solo la tonica
                     } else {
                         if (Math.abs(Number(offset) - i) > 12 ||  // Salti non più larghi di un'ottava
+                            Math.abs(Number(offset) - i) === 9 || // Salti di 9 semitoni
+                            Math.abs(Number(offset) - i) === 10 || // Salti di 10 semitoni
+                            Math.abs(Number(offset) - i) === 11 || // Salti di 11 semitoni
                             // Rispetto alla nota più alta o più bassa suonata non può essere più lontano di 16 ST
                             (Math.max(...CFNotes) - i) > 15 || // Considero 2 in meno (15 invece di 17) perché dovrò concludere con 2 -> 1
                             (i - Math.min(...(CFNotes.filter(a => a !== 0)))) > 15 || // Tolgo gli 0.
