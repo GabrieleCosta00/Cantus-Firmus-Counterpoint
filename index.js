@@ -349,17 +349,22 @@ function newPossibilities(offset) {
                             (((Number(offset) - (CFNotes[indexCF-2] - 1)) === 8) && (i !== (Number(offset) - 1)) && (i !== (Number(offset) - 2))) ||
                             // Se sono salito di una sesta devo scendere di 1 o 2 semitoni
 
-                            (((Number(offset) - (CFNotes[indexCF-2] - 1)) !== 7)
+                            ((((Number(offset) - (CFNotes[indexCF-2] - 1)) !== 7) && ((Number(offset) - (CFNotes[indexCF-2] - 1)) !== 3) && ((Number(offset) - (CFNotes[indexCF-2] - 1)) !== 4))
                                 && (((((Number(offset) - (CFNotes[indexCF-2] - 1)) > 2) && (((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 1) && ((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 2))))
                                     || (indexCF === 1)) && ((i < (Number(offset) - 2)) || (i > (Number(offset) + 2)))) ||
                             // Se ho appena fatto un salto a salire e prima non sono sceso per step, non posso più saltare, quindi devo andare per step
                             (((Number(offset) - (CFNotes[indexCF-2] - 1)) === 7)
-                                && (((((Number(offset) - (CFNotes[indexCF-2] - 1)) > 2) && (((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 1) && ((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 2))))
-                                    || (indexCF === 1)) && ((i < (Number(offset) - 2)) || (i > (Number(offset) + 2))) && (i !== (Number(offset) + 5))) ||
+                                && ((((Number(offset) - (CFNotes[indexCF-2] - 1)) > 2) && (((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 1) && ((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 2))))
+                                && ((i < (Number(offset) - 2)) || (i > (Number(offset) + 2))) && (i !== (Number(offset) + 5))) ||
                             // Se sono appena salito di una quinta giusta e prima non sono sceso per step, non posso più saltare, quindi devo andare per step,
                             // tranne fare un'altra quarta giusta a salire
-                            (((((((CFNotes[indexCF-2] - 1) - Number(offset)) > 2) && (((CFNotes[indexCF-2] - CFNotes[indexCF-3]) !== 1) && ((CFNotes[indexCF-2] - CFNotes[indexCF-3]) !== 2))))
-                                || (indexCF === 1)) && ((i < (Number(offset) - 2)) || (i > (Number(offset) + 2)))) ||
+                            ((((Number(offset) - (CFNotes[indexCF-2] - 1)) === 3) || ((Number(offset) - (CFNotes[indexCF-2] - 1)) === 4))
+                                && ((((Number(offset) - (CFNotes[indexCF-2] - 1)) > 2) && (((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 1) && ((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 2))))
+                                && ((i < (Number(offset) - 2)) || (i > (Number(offset) + 2))) && (i !== (Number(offset) + 3)) && (i !== (Number(offset) + 4)) && (i !== (Number(offset) + 5))) ||
+                            // Se sono appena salito di una terza e prima non sono sceso per step, non posso più saltare, quindi devo andare per step,
+                            // tranne fare un'altra terza o quarta a salire
+                            ((((((CFNotes[indexCF-2] - 1) - Number(offset)) > 2) && (((CFNotes[indexCF-2] - CFNotes[indexCF-3]) !== 1) && ((CFNotes[indexCF-2] - CFNotes[indexCF-3]) !== 2))))
+                                && ((i < (Number(offset) - 2)) || (i > (Number(offset) + 2)))) ||
                             // Se ho appena fatto un salto a scendere e prima non sono salito per step, non posso più saltare, quindi devo andare per step
 
                             // Rispetto alla nota più alta o più bassa suonata non può essere più lontano di 16 ST
