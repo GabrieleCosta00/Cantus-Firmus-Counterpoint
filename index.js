@@ -331,13 +331,43 @@ function newPossibilities(offset) {
                         } // L'ultima nota può essere solo la tonica
                     } else {
                         if (Math.abs(Number(offset) - i) > 12 ||  // Salti non più larghi di un'ottava
+
                             Math.abs(Number(offset) - i) === 9 || // Salti di 9 semitoni
                             Math.abs(Number(offset) - i) === 10 || // Salti di 10 semitoni
                             Math.abs(Number(offset) - i) === 11 || // Salti di 11 semitoni
+
+                            (((((CFNotes[indexCF-2] - 1) - Number(offset)) === 1 ) || (((CFNotes[indexCF-2] - 1) - Number(offset)) === 2 ))
+                                && ((Number(offset) - i) === 12)) || // Se sono sceso di 1 o 2 semitoni lascio l'ottava alta ma tolgo quella bassa
+                            ((((Number(offset) - (CFNotes[indexCF-2] - 1)) === 1 ) || ((Number(offset) - (CFNotes[indexCF-2] - 1)) === 2 ))
+                                && ((i - (Number(offset)) === 12) || (i - (Number(offset)) === 8))) ||
+                            // Se sono salito di 1 o 2 semitoni lascio l'ottava bassa ma tolgo quella alta e la sesta
+
+                            ((((CFNotes[indexCF-2] - 1) - Number(offset)) === 12) && (i !== (Number(offset) + 1)) && (i !== (Number(offset) + 2))) ||
+                            // Se sono sceso di un'ottava devo salire di 1 o 2 semitoni
+                            (((Number(offset) - (CFNotes[indexCF-2] - 1)) === 12) && (i !== (Number(offset) - 1)) && (i !== (Number(offset) - 2))) ||
+                            // Se sono salito di un'ottava devo scendere di 1 o 2 semitoni
+                            (((Number(offset) - (CFNotes[indexCF-2] - 1)) === 8) && (i !== (Number(offset) - 1)) && (i !== (Number(offset) - 2))) ||
+                            // Se sono salito di una sesta devo scendere di 1 o 2 semitoni
+
+                            (((Number(offset) - (CFNotes[indexCF-2] - 1)) !== 7)
+                                && (((((Number(offset) - (CFNotes[indexCF-2] - 1)) > 2) && (((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 1) && ((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 2))))
+                                    || (indexCF === 1)) && ((i < (Number(offset) - 2)) || (i > (Number(offset) + 2)))) ||
+                            // Se ho appena fatto un salto a salire e prima non sono sceso per step, non posso più saltare, quindi devo andare per step
+                            (((Number(offset) - (CFNotes[indexCF-2] - 1)) === 7)
+                                && (((((Number(offset) - (CFNotes[indexCF-2] - 1)) > 2) && (((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 1) && ((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 2))))
+                                    || (indexCF === 1)) && ((i < (Number(offset) - 2)) || (i > (Number(offset) + 2))) && (i !== (Number(offset) + 5))) ||
+                            // Se sono appena salito di una quinta giusta e prima non sono sceso per step, non posso più saltare, quindi devo andare per step,
+                            // tranne fare un'altra quarta giusta a salire
+                            (((((((CFNotes[indexCF-2] - 1) - Number(offset)) > 2) && (((CFNotes[indexCF-2] - CFNotes[indexCF-3]) !== 1) && ((CFNotes[indexCF-2] - CFNotes[indexCF-3]) !== 2))))
+                                || (indexCF === 1)) && ((i < (Number(offset) - 2)) || (i > (Number(offset) + 2)))) ||
+                            // Se ho appena fatto un salto a scendere e prima non sono salito per step, non posso più saltare, quindi devo andare per step
+
                             // Rispetto alla nota più alta o più bassa suonata non può essere più lontano di 16 ST
                             (Math.max(...CFNotes) - i) > 15 || // Considero 2 in meno (15 invece di 17) perché dovrò concludere con 2 -> 1
                             (i - Math.min(...(CFNotes.filter(a => a !== 0)))) > 15 || // Tolgo gli 0.
+
                             Math.abs(Number(offset) - i) === 0 || // Non si possono ripetere le stesse note
+
                             pianoKey.classList.contains("outOfTonality")) {
                             pianoKey.classList.add("notPossible")
                         }
