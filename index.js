@@ -313,6 +313,10 @@ function newPossibilities(offset) {
     else {
         pianoKeys.forEach((pianoKey, i) => {
             // TODO: here goes the conditions for NOT good notes
+            // TODO: finire tutti i salti minori e maggiori/minori
+            // TODO: Regolamentare il climax (almeno sulla terza nota suonata)
+            // TODO: Implementare le regole dei salti
+            // TODO: Regolamentare il contrappunto
             if (whichScore === "CF") {  // Here the CF's conditions
                 if (indexCF === 6) {
                     if ((i !== (CFNotes[0] + 1)) && (i !== ((CFNotes[0] + 13) % 36)) && (i !== ((CFNotes[0] + 25) % 36))) {
@@ -337,10 +341,94 @@ function newPossibilities(offset) {
                             pianoKey.classList.contains("outOfTonality")) {
                             pianoKey.classList.add("notPossible")
                         }
+                        else {
+                            // Tutti i vari salti
+                            if (tonalityMask[3] === 0) {     // Sono maggiore
+                                if ((Number(offset) - i) === 8) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) !== 5) && (Number(offset) - i) === 6) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) === 5) && (Number(offset) - i) === 7) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) === 4 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 9 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 11) && (Number(offset) - i) === 3) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) === 0 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 2 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 5 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 7) && (Number(offset) - i) === 4) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) === 0 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 2 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 5) && (Number(offset) - i) === 2) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) === 4 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 7 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 9 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 11) && (Number(offset) - i) === 1) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) === 4 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 11) && (i - Number(offset)) === 2) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) === 0 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 2 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 5 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 7 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 9) && (i - Number(offset)) === 1) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) === 0 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 5 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 7) && (i - Number(offset)) === 3) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) === 2 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 4 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 9 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 11) && (i - Number(offset)) === 4) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) === 5 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 11) && (i - Number(offset)) === 7) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) === 0 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 2 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 4 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 7 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 9) && (i - Number(offset)) === 6) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                                if (((Number(offset) - (CFNotes[0] - 1)) === 0 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 2 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 5 ||
+                                    (Number(offset) - (CFNotes[0] - 1)) === 7) && (i - Number(offset)) === 8) {
+                                    pianoKey.classList.add("notPossible")
+                                }
+                            }
+                            else {
+                                if (tonalityMask[4] === 0) {     // Sono minore
+
+                                }
+                                else {      // Non sono ancora né maggiore né minore
+
+                                }
+                            }
+                        }
                     }
                 }
             }
             else {  // Here the CTP's conditions
+                // Per fare riferimento alla nota del CF corrispondente utilizzare (CFNotes[<indice>] - 1), con <indice> che va da 0 a 7
                 if (Math.abs(Number(offset)-i) > 3 || pianoKey.classList.contains("outOfTonality")) {
                     pianoKey.classList.add("notPossible")
                 }
