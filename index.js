@@ -314,7 +314,7 @@ function newPossibilities(offset) {
         pianoKeys.forEach((pianoKey, i) => {
             // TODO: here goes the conditions for NOT good notes
             // TODO: finire tutti i salti minori e maggiori/minori
-            // TODO: Regolamentare il climax (almeno sulla terza nota suonata)
+            // TODO: Regolamentare il climax (almeno sulla quarta nota suonata)
             // TODO: Implementare le regole dei salti
             // TODO: Regolamentare il contrappunto
             if (whichScore === "CF") {  // Here the CF's conditions
@@ -337,10 +337,14 @@ function newPossibilities(offset) {
                             Math.abs(Number(offset) - i) === 11 || // Salti di 11 semitoni
 
                             (((((CFNotes[indexCF-2] - 1) - Number(offset)) === 1 ) || (((CFNotes[indexCF-2] - 1) - Number(offset)) === 2 ))
-                                && ((Number(offset) - i) === 12)) || // Se sono sceso di 1 o 2 semitoni lascio l'ottava alta ma tolgo quella bassa
+                                && ((Number(offset) - i) === 12)) || // Se sono sceso di 1 o 2 semitoni lascio l'ottava alta e la sesta minore ascendente, ma tolgo quella bassa
                             ((((Number(offset) - (CFNotes[indexCF-2] - 1)) === 1 ) || ((Number(offset) - (CFNotes[indexCF-2] - 1)) === 2 ))
                                 && ((i - (Number(offset)) === 12) || (i - (Number(offset)) === 8))) ||
-                            // Se sono salito di 1 o 2 semitoni lascio l'ottava bassa ma tolgo quella alta e la sesta
+                            // Se sono salito di 1 o 2 semitoni lascio l'ottava bassa ma tolgo quella alta e la sesta ascendente
+                            !((((CFNotes[indexCF-2] - 1) - Number(offset)) === 1 ) || (((CFNotes[indexCF-2] - 1) - Number(offset)) === 2 ))
+                            && !(((Number(offset) - (CFNotes[indexCF-2] - 1)) === 1 ) || ((Number(offset) - (CFNotes[indexCF-2] - 1)) === 2 ))
+                            && ((i - (Number(offset)) === 12) || (i - (Number(offset)) === 8) || ((Number(offset) - i) === 12)) ||
+                            // Se non sono andato per step prima, tolgo l'ottava bassa, quella alta e la sesta ascendente
 
                             ((((CFNotes[indexCF-2] - 1) - Number(offset)) === 12) && (i !== (Number(offset) + 1)) && (i !== (Number(offset) + 2))) ||
                             // Se sono sceso di un'ottava devo salire di 1 o 2 semitoni
@@ -361,8 +365,8 @@ function newPossibilities(offset) {
                             ((((Number(offset) - (CFNotes[indexCF-2] - 1)) === 3) || ((Number(offset) - (CFNotes[indexCF-2] - 1)) === 4))
                                 && ((((Number(offset) - (CFNotes[indexCF-2] - 1)) > 2) && (((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 1) && ((CFNotes[indexCF-3] - CFNotes[indexCF-2]) !== 2))))
                                 && ((i < (Number(offset) - 2)) || (i > (Number(offset) + 2))) && (i !== (Number(offset) + 3)) && (i !== (Number(offset) + 4)) && (i !== (Number(offset) + 5))) ||
-                            // Se sono appena salito di una terza e prima non sono sceso per step, non posso più saltare, quindi devo andare per step,
-                            // tranne fare un'altra terza o quarta a salire
+                            // Se sono appena salito di una quinta giusta e prima non sono sceso per step, non posso più saltare, quindi devo andare per step,
+                            // tranne fare un'altra quarta giusta a salire
                             ((((((CFNotes[indexCF-2] - 1) - Number(offset)) > 2) && (((CFNotes[indexCF-2] - CFNotes[indexCF-3]) !== 1) && ((CFNotes[indexCF-2] - CFNotes[indexCF-3]) !== 2))))
                                 && ((i < (Number(offset) - 2)) || (i > (Number(offset) + 2)))) ||
                             // Se ho appena fatto un salto a scendere e prima non sono salito per step, non posso più saltare, quindi devo andare per step
