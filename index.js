@@ -329,12 +329,14 @@ function newPossibilities(offset) {
                         if (i !== (CFNotes[6] - 3)) {
                             pianoKey.classList.add("notPossible")
                         } // L'ultima nota può essere solo la tonica
-                    } else {
+                    }
+                    else {
                         if (Math.abs(Number(offset) - i) > 12 ||  // Salti non più larghi di un'ottava
-
                             Math.abs(Number(offset) - i) === 9 || // Salti di 9 semitoni
                             Math.abs(Number(offset) - i) === 10 || // Salti di 10 semitoni
                             Math.abs(Number(offset) - i) === 11 || // Salti di 11 semitoni
+                            Math.abs(Number(offset) - i) === 6 || // Salti di tritono
+                            (Number(offset) - i) === 8 || // Salti di sesta minore discendente
 
                             (((((CFNotes[indexCF-2] - 1) - Number(offset)) === 1 ) || (((CFNotes[indexCF-2] - 1) - Number(offset)) === 2 ))
                                 && (i < (Number(offset) - 2))) ||
@@ -382,12 +384,9 @@ function newPossibilities(offset) {
                             pianoKey.classList.contains("outOfTonality")) {
                             pianoKey.classList.add("notPossible")
                         }
-                        else {
+                        /*else {
                             // Tutti i vari salti
                             if (tonalityMask[3] === 0) {     // Sono maggiore
-                                if ((Number(offset) - i) === 8) {
-                                    pianoKey.classList.add("notPossible")
-                                }
                                 if (((Number(offset) - (CFNotes[0] - 1)) !== 5) && (Number(offset) - i) === 6) {
                                     pianoKey.classList.add("notPossible")
                                 }
@@ -464,7 +463,7 @@ function newPossibilities(offset) {
 
                                 }
                             }
-                        }
+                        }*/
                     }
                 }
             }
