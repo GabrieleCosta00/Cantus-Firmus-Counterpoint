@@ -95,7 +95,7 @@ body {
 }
 
 .notPossible {
-    background-color: #770000;
+    background-color: #801414;
 }
 
 .outOfTonality {
@@ -150,4 +150,8 @@ body {
 
 .stop {
     background-color: #c42e2e;
+}
+
+.reset {
+    background-color: #af7a36;
 }

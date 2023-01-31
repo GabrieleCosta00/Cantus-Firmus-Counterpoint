@@ -205,7 +205,7 @@ function playWriteClearPoss(newUrl, number) {
             }
             if (indexCF === 0) {
                 clearScore();
-                clearTonalityMask();
+                //clearTonalityMask();
                 setTonalityMask(Number(number) - 1, 0); // Means ("this note index", "is the root (= 0)")
             }
             if (((((Number(number) - CFNotes[0]) % 12) === 3) || (((CFNotes[0] - Number(number)) % 12) === 9)) && (tonalityMask[(CFNotes[0] + 2) % 36] !== 0)) {
@@ -307,7 +307,7 @@ function clearPossibilities() {
 // Here goes the rules for the choise of the next note (it add a colour)
 function newPossibilities(offset) {
     if (indexCF === 8) {
-        clearTonalityMask();
+        //clearTonalityMask();
         clearPossibilities();
     }
     else {
@@ -526,6 +526,15 @@ function transportStop() {
     stopSound();
     isPlaying = false;
     currentTransport = 0;
+}
+
+// When you click on the reset button
+function resetTonality() {
+    clearTonalityMask()
+    clearScore()
+    indexCTP = 0
+    indexCF = 0
+    clearPossibilities()
 }
 
 // SCRITTURA SU PENTAGRAMMA
