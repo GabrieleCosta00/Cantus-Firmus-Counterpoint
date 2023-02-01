@@ -572,7 +572,7 @@ function newPossibilities(offset) {
                         }
                     }
                     if (indexCTP === 7) {
-                        if (CTPNotes[6] !== i || 12!==i) { //Deve terminare sulla tonica (un po' controintuitivo questo codice..)
+                        if (true) { //Deve terminare sulla tonica (un po' controintuitivo questo codice..)
                             if (!pianoKey.classList.contains("notPossible"))
                                 pianoKey.classList.add("notPossible")
                         }
@@ -600,6 +600,7 @@ function newPossibilities(offset) {
                         if (!pianoKey.classList.contains("notPossible"))
                             pianoKey.classList.add("notPossible")
                     }
+                    //TODO: ti torna che siano queste quinte, ottave, terze, seste parallele?
                     if (Math.abs(CTPNotes[indexCTP - 1] - CFNotes[indexCTP - 1]) === 7 ||
                         Math.abs(CTPNotes[indexCTP - 1] - CFNotes[indexCTP - 1]) === 19 ||
                         Math.abs(CTPNotes[indexCTP - 1] - CFNotes[indexCTP - 1]) === 31) {//Quinte parallele
@@ -612,8 +613,8 @@ function newPossibilities(offset) {
                     }
                     if (Math.abs(CTPNotes[indexCTP - 1] - CFNotes[indexCTP - 1]) === 12 ||
                         Math.abs(CTPNotes[indexCTP - 1] - CFNotes[indexCTP - 1]) === 24) {//Ottave parallele
-                        if (Math.abs(CFNotes[indexCTP] - i) === 11 ||
-                            Math.abs(CFNotes[indexCTP] - i) === 23) {
+                        if (Math.abs(CFNotes[indexCTP] - i) === 13 ||
+                            Math.abs(CFNotes[indexCTP] - i) === 25) {
                             if (!pianoKey.classList.contains("notPossible"))
                                 pianoKey.classList.add("notPossible")
                         }
