@@ -686,6 +686,7 @@ function resetTonality() {
     indexCTP = 0
     indexCF = 0
     clearPossibilities()
+    ctx.fillStyle = "rgb(0, 0, 0)"
     ctx.clearRect(0, 0, 1015, 200)
     drawStaves()
     if ((whichScore !== "CF"))
