@@ -686,6 +686,11 @@ function resetTonality() {
     indexCTP = 0
     indexCF = 0
     clearPossibilities()
+    ctx.clearRect(0, 0, 1015, 200)
+    drawStaves()
+    if ((whichScore !== "CF"))
+        for (let i=0; i<CFNotes.length; i++)
+            drawNote(CFNotes[i], i,false)
 }
 
 // SCRITTURA SU PENTAGRAMMA
