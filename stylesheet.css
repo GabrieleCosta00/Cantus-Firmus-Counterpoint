@@ -20,6 +20,8 @@ body {
     background-color: rgba(136, 97, 66, 0.53);
     border-radius: 10px;
     justify-items: center;
+    box-shadow: 0 0 20px black;
+    display: block;
 }
 
 #scoreCF {
@@ -80,6 +82,8 @@ body {
     cursor: pointer;
     text-align: center;
     padding-top: 160px;
+    box-shadow: 0 5px #595959;
+    transition: background-color 80ms linear;
 }
 
 .black-key {
@@ -92,6 +96,7 @@ body {
     text-align: center;
     color: white;
     padding-top: 80px;
+    box-shadow: 0 5px #363636;
 }
 
 .notPossible {
@@ -158,8 +163,12 @@ body {
 
 .keyIsPlayingWhite {
     background-color: #b7b7b7;
+    box-shadow: 0 1px #595959;
+    height: 192px;
 }
 
 .keyIsPlayingBlack {
     background-color: #494949;
+    box-shadow: 0 1px #363636;
+    height: 110px;
 }
