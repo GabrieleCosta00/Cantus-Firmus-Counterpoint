@@ -252,6 +252,7 @@ function playWriteClearPoss(newUrl, number) {
             let currentAudio = new Audio(newUrl)
             notePlayingCF = currentAudio;
             currentAudio.play();
+            colourKeyPlaying(number);
         } else {
             //TODO: forse non è necessario, ma ci sta
             //Se ancora la tonalità non è stata decisa non si può fare il CTP
@@ -277,6 +278,18 @@ function playWriteClearPoss(newUrl, number) {
         clearPossibilities();
     }
     else {alert("Wrong note!")}
+}
+
+// The function that colours the key that is playing
+function colourKeyPlaying(num) {
+    pianoKeys.forEach((pianoKey, i) => {
+        if (i === (num - 1)) {
+            if ((i % 12 === 1) || (i % 12 === 3) || (i % 12 === 6) || (i % 12 === 8) || (i % 12 === 10))
+                pianoKey.classList.add("keyIsPlayingBlack")
+            else
+                pianoKey.classList.add("keyIsPlayingWhite")
+        }
+    })
 }
 
 // It plays the sound corresponding to the name of the note, and colours the corresponding key
@@ -313,6 +326,12 @@ function stopSound() {
         }
         if (pianoKey.classList.contains("writtenOnCTPScore")) {
             pianoKey.classList.remove("writtenOnCTPScore")
+        }
+        if (pianoKey.classList.contains("keyIsPlayingWhite")) {
+            pianoKey.classList.remove("keyIsPlayingWhite")
+        }
+        if (pianoKey.classList.contains("keyIsPlayingBlack")) {
+            pianoKey.classList.remove("keyIsPlayingBlack")
         }
     })
 }

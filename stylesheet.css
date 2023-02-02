@@ -155,3 +155,11 @@ body {
 .reset {
     background-color: #af7a36;
 }
+
+.keyIsPlayingWhite {
+    background-color: #b7b7b7;
+}
+
+.keyIsPlayingBlack {
+    background-color: #494949;
+}
