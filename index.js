@@ -597,6 +597,8 @@ noteTexts.forEach((note) => {
 
 // When you click on the PLAY button it will start the execution
 function transportPlay() {
+    if (!document.querySelector('.play').classList.contains("playSelected"))
+        document.querySelector('.play').classList.add("playSelected")
     clearPossibilities();
     if (isPlaying === false) {
         isPlaying = true;
@@ -623,6 +625,10 @@ function playing() {
 
 // When you click on the STOP button it will stop the execution
 function transportStop() {
+    if (document.querySelector('.play').classList.contains("playSelected"))
+        document.querySelector('.play').classList.remove("playSelected")
+    document.querySelector('.stop').classList.add("stopSelected")
+    setTimeout(() => {document.querySelector('.stop').classList.remove("stopSelected")}, 500)
     stopSound();
     clearTimeout(myTimeoutPlaying);
     clearTimeout(myTimeoutStop);
@@ -632,6 +638,10 @@ function transportStop() {
 
 // When you click on the reset button
 function resetTonality() {
+    if (document.querySelector('.play').classList.contains("playSelected"))
+        transportStop()
+    document.querySelector('.reset').classList.add("resetSelected")
+    setTimeout(() => {document.querySelector('.reset').classList.remove("resetSelected")}, 500)
     selectCF()
     clearTonalityMask()
     clearScore()
