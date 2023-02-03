@@ -8,6 +8,17 @@ body {
     background-color: darkgrey;
 }
 
+#preloader {
+    text-align: center;
+    padding-top: 60%;
+    background: white url("images/loader.gif") no-repeat center center;
+    background-size: 5%;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 20;
+}
+
 .Text {
     text-justify: distribute;
     text-align: center;

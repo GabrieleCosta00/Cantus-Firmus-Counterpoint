@@ -28,6 +28,8 @@ function preloader() {
         currentAudio[i].volume = 0
         currentAudio[i].play()
     }
+    // only when all the files are loaded the page appears
+    document.getElementById('preloader').style.display = 'none'
 }
 
 preloader();
@@ -107,13 +109,11 @@ function selectCF() {
     if (CTPScore.classList.contains('selectedScore')) {CTPScore.classList.remove('selectedScore')}
     whichScore = "CF";
     if (!CFScore.classList.contains('selectedScore')) {CFScore.classList.add('selectedScore')}
-    //TODO: necessario per cambiare da CF a CTP
     clearPossibilities()
     newPossibilities(CFNotes[indexCF - 1] - 1)
 }
 
 // If you click on the CF box you will write this score. Same for the CTP
-//TODO: Qui è un pochino diverso rispetto a prima
 CFScore.addEventListener("click", () => {
     selectCF()
 })
@@ -376,7 +376,6 @@ function newPossibilities(offset) {
         // Here goes the conditions for NOT good notes
         // TODO: Regolamentare il climax (almeno sulla quarta nota suonata)
         // TODO: Farlo suonare decentemente
-        // TODO: Renderlo più fiketto
         if (whichScore === "CF") {  // Here the CF's conditions
             if (indexCF === 8) {
                 clearTonalityMask();
