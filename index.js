@@ -470,7 +470,6 @@ function newPossibilities(offset) {
             }
         }
         else { // Here the CTP's conditions
-            // Per fare riferimento alla nota del CF corrispondente utilizzare (CFNotes[<indice>] - 1), con <indice> che va da 0 a 7
             if (pianoKey.classList.contains("outOfTonality")) {
                 if (!pianoKey.classList.contains("notPossible"))
                     pianoKey.classList.add("notPossible")
@@ -478,9 +477,9 @@ function newPossibilities(offset) {
             if (indexCTP >= 8)
                 indexCTP = 0
             if (indexCTP === 0) {
-                if (((CFNotes[0] - 1) !== i) && ((CFNotes[0] + 6) !== i) && //unisono e quinta sopra
-                    ((CFNotes[0] - 13) !== i) && ((CFNotes[0] + 30) !== i) && //ottava sotto e ultima quinta sopra
-                    ((CFNotes[0] - 25) !== i) && ((CFNotes[0] + 11) !== i) && //2 ottave sotto e una sopra
+                if (((CFNotes[0] - 1) !== i) && ((CFNotes[0] + 6) !== i) && //unison e fifth above
+                    ((CFNotes[0] - 13) !== i) && ((CFNotes[0] + 30) !== i) && //eighth below and last fifth above
+                    ((CFNotes[0] - 25) !== i) && ((CFNotes[0] + 11) !== i) && //2 octaves below and one above
                     ((CFNotes[0] + 18) !== i) && ((CFNotes[0] + 23) !== i) && //...
                     ((CFNotes[0] + 35) !== i)) {
                     if (!pianoKey.classList.contains("notPossible")) {
@@ -493,24 +492,26 @@ function newPossibilities(offset) {
                 }
             }
             else {
+
+                // The CTP must end with the 7-1 motion (the 7th could be minor or major, depending on the key).
                 if (indexCTP === 7) {
-                    if ((i !== (CTPNotes[6] - 1) + 1) && (i !== (CTPNotes[6] - 1) + 2)) { //Deve terminare sulla tonica (un po' controintuitivo questo codice..)
+                    if ((i !== (CTPNotes[6] - 1) + 1) && (i !== (CTPNotes[6] - 1) + 2)) {
                         if (!pianoKey.classList.contains("notPossible"))
                             pianoKey.classList.add("notPossible")
                     }
                 } else {
-                    if (CFNotes[0] >= CTPNotes[0]) {  //Il CTP starà sotto il CF
+                    if (CFNotes[0] >= CTPNotes[0]) { // The CTP will be below the CF.
                         if (indexCF > indexCTP && CFNotes[indexCTP] < i + 1)
                             if (!pianoKey.classList.contains("notPossible"))
                                 pianoKey.classList.add("notPossible")
-                    } else { //Il CTP starà sopra il CF
+                    } else { // The CTP will be above the CF.
                         if (indexCF > indexCTP && CFNotes[indexCTP] > i + 1)
                             if (!pianoKey.classList.contains("notPossible"))
                                 pianoKey.classList.add("notPossible")
                     }
 
-                    if (indexCTP === 6) { //La penultima nota deve essere la settima
-                        //Bisogna considerare sia settima maggiore che settima minore
+                    // The CTP must end with the 7-1 motion (the 7th could be minor or major, depending on the key).
+                    if (indexCTP === 6) {
                         if (CFNotes[0] - 2 !== i && CFNotes[0] - 14 !== i && CFNotes[0] - 26 !== i &&
                             CFNotes[0] + 10 !== i && CFNotes[0] + 22 !== i &&
                             CFNotes[0] - 3 !== i && CFNotes[0] - 15 !== i && CFNotes[0] - 27 !== i &&
@@ -520,6 +521,7 @@ function newPossibilities(offset) {
                         }
                     }
 
+                    // Every harmonic consonant interval.
                     if (CFNotes[indexCTP] + 6 !== i &&
                         CFNotes[indexCTP] + 11 !== i && CFNotes[indexCTP] + 18 !== i &&
                         CFNotes[indexCTP] + 23 !== i && CFNotes[indexCTP] + 30 !== i &&
@@ -540,34 +542,65 @@ function newPossibilities(offset) {
                             pianoKey.classList.add("notPossible")
                     }
 
+                    // Parallel fifths aren't allowed.
                     if ((Math.abs(CTPNotes[indexCTP - 1] - CFNotes[indexCTP - 1]) % 12 === 7) && (Math.abs(i - (CFNotes[indexCTP] - 1)) % 12 === 7)) {//Quinte parallele
                         if (!pianoKey.classList.contains("notPossible"))
                             pianoKey.classList.add("notPossible")
                     }
 
+                    // Parallel octaves aren't allowed.
                     if ((Math.abs(CTPNotes[indexCTP - 1] - CFNotes[indexCTP - 1]) % 12 === 0) && (Math.abs(i - (CFNotes[indexCTP] - 1)) % 12 === 0)) {//Ottave parallele
                         if (!pianoKey.classList.contains("notPossible"))
                             pianoKey.classList.add("notPossible")
                     }
 
+                    // More than two parallel sixths aren't allowed.
                     if (((Math.abs(CTPNotes[indexCTP - 1] - CFNotes[indexCTP - 1]) % 12 === 8)
                             || (Math.abs(CTPNotes[indexCTP - 1] - CFNotes[indexCTP - 1]) % 12 === 9))
                         && ((Math.abs(CTPNotes[indexCTP - 2] - CFNotes[indexCTP - 2]) % 12 === 8)
                             || (Math.abs(CTPNotes[indexCTP - 2] - CFNotes[indexCTP - 2]) % 12 === 9))
                         && ((Math.abs(i - (CFNotes[indexCTP] - 1)) % 12 === 8)
-                            || (Math.abs(i - (CFNotes[indexCTP] - 1)) % 12 === 9))) { //Seste parallele
+                            || (Math.abs(i - (CFNotes[indexCTP] - 1)) % 12 === 9))) {
                         if (!pianoKey.classList.contains("notPossible"))
                             pianoKey.classList.add("notPossible")
                     }
 
+                    // More than two parallel thirds aren't allowed.
                     if (((Math.abs(CTPNotes[indexCTP - 1] - CFNotes[indexCTP - 1]) % 12 === 3)
                             || (Math.abs(CTPNotes[indexCTP - 1] - CFNotes[indexCTP - 1]) % 12 === 4))
                         && ((Math.abs(CTPNotes[indexCTP - 2] - CFNotes[indexCTP - 2]) % 12 === 3)
                             || (Math.abs(CTPNotes[indexCTP - 2] - CFNotes[indexCTP - 2]) % 12 === 4))
                         && ((Math.abs(i - (CFNotes[indexCTP] - 1)) % 12 === 3)
-                            || (Math.abs(i - (CFNotes[indexCTP] - 1)) % 12 === 4))) { //Terze parallele
+                            || (Math.abs(i - (CFNotes[indexCTP] - 1)) % 12 === 4))) {
                         if (!pianoKey.classList.contains("notPossible"))
                             pianoKey.classList.add("notPossible")
+                    }
+
+                    // A perfect interval must be reached only by contrary motion or with horn fifths.
+                    // This is the case for the fifth.
+                    if (Math.abs(CFNotes[indexCTP] - i - 1) % 12 === 7) {
+                        if (Math.sign(CFNotes[indexCTP - 1] - CFNotes[indexCTP]) === Math.sign(CTPNotes[indexCTP - 1] - i - 1)) {
+                            if (Math.abs(CFNotes[indexCTP - 1] - CFNotes[indexCTP]) !== 1) {
+                                if (Math.abs(CFNotes[indexCTP - 1] - CTPNotes[indexCTP - 1]) % 12 !== 3 &&
+                                    Math.abs(CFNotes[indexCTP - 1] - CTPNotes[indexCTP - 1]) % 12 !== 4) {
+                                    if (!pianoKey.classList.contains("notPossible"))
+                                        pianoKey.classList.add("notPossible")
+                                }
+                            }
+                        }
+                    }
+
+                    // A perfect interval must be reached only by contrary motion or with horn fifths.
+                    // This is the case for the octave.
+                    if (Math.abs(CFNotes[indexCTP] - i - 1) % 12 === 0) {
+                        if (Math.sign(CFNotes[indexCTP - 1] - CFNotes[indexCTP]) === Math.sign(CTPNotes[indexCTP - 1] - i - 1)) {
+                            if (Math.abs(CFNotes[indexCTP - 1] - CFNotes[indexCTP]) !== 1) {
+                                if (Math.abs(CFNotes[indexCTP - 1] - CTPNotes[indexCTP - 1]) % 12 !== 7) {
+                                    if (!pianoKey.classList.contains("notPossible"))
+                                        pianoKey.classList.add("notPossible")
+                                }
+                            }
+                        }
                     }
                 }
             }
