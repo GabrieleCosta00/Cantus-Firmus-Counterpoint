@@ -610,13 +610,19 @@ function transportPlay() {
 function playing() {
     if (currentTransport === 8) {
         // currentTransport = 0;
+        ctx.fillStyle = "rgb(0, 0, 0)"
+        ctx.clearRect(0, 0, 1015, 200)
+        drawStaves()
+        for (let i=0; i<CFNotes.length; i++)
+            drawNote(CFNotes[i], i,false)
+        for (let i=0; i<CTPNotes.length; i++)
+            drawNote(CTPNotes[i], i,true)
         transportStop();
     }
     else {
         noteTexts.forEach((note, i) => {
             if (i === currentTransport) {
                 playSoundAndColourKey(note.innerHTML, "CF", 20)
-                //TODO: nuova funzione
                 drawPositionOnScore(i)
             }
             if (i === currentTransport + 8) {playSoundAndColourKey(note.innerHTML, "CTP", 20)}
@@ -767,6 +773,7 @@ function drawSharp(x, y, ctp) {
     ctx.fillRect(x-3, y+8, 11, 1)
 }
 
+// The function that draws the red rectangle on the score
 function drawPositionOnScore(index) {
     ctx.clearRect(0, 0, 1015, 200)
     drawStaves()
@@ -774,13 +781,13 @@ function drawPositionOnScore(index) {
         drawNote(CFNotes[i], i, false)
     for (let i=0; i<CTPNotes.length; i++)
         drawNote(CTPNotes[i], i, true)
-    ctx.strokeStyle = "rgb(255, 0, 0)"
-    ctx.strokeRect(135 + 100 * index, 0, 30, 200)
+    ctx.strokeStyle = "rgb(255,0,0)"
+    // ctx.strokeRect(135 + 100 * index, 0, 30, 200)
+    ctx.beginPath()
+    ctx.arc(135 + 100 * index, 12, 10, Math.PI, 3*Math.PI/2)
+    ctx.arc(135 + 100 * index + 30, 12, 10, 3*Math.PI/2, 2*Math.PI)
+    ctx.arc(135 + 100 * index + 30, 188, 10, 0, Math.PI/2)
+    ctx.arc(135 + 100 * index, 188, 10, Math.PI/2, Math.PI)
+    ctx.lineTo(135 + 100 * index - 10, 12)
+    ctx.stroke()
 }
-
-// TODO: ho modificato questo
-// Ho aggiunto clearPossibilities() quando si fa PLAY
-// Ho aggiunto which come parametro passato a playSoundAndColourKey() in modo che se metto "CF" o "CTP" lui colori del
-//      colore giusto il tasto che sta suonando (arriva da playing()), se metto solo uno spazio (o qualsiasi altra cosa)
-//      guarda dov'è il puntatore come faceva prima
-// Ho ripensato tutto l'audio, aggiungendo una funzione di preload e cambiando il modo di "fare play" e "stop" di ogni nota
