@@ -614,7 +614,11 @@ function playing() {
     }
     else {
         noteTexts.forEach((note, i) => {
-            if (i === currentTransport) {playSoundAndColourKey(note.innerHTML, "CF", 20)}
+            if (i === currentTransport) {
+                playSoundAndColourKey(note.innerHTML, "CF", 20)
+                //TODO: nuova funzione
+                drawPositionOnScore(i)
+            }
             if (i === currentTransport + 8) {playSoundAndColourKey(note.innerHTML, "CTP", 20)}
         })
         currentTransport++;
@@ -761,6 +765,17 @@ function drawSharp(x, y, ctp) {
     ctx.fillRect(x+5, y-2, 1, 15)
     ctx.fillRect(x-3, y+3, 11, 1)
     ctx.fillRect(x-3, y+8, 11, 1)
+}
+
+function drawPositionOnScore(index) {
+    ctx.clearRect(0, 0, 1015, 200)
+    drawStaves()
+    for (let i=0; i<CFNotes.length; i++)
+        drawNote(CFNotes[i], i, false)
+    for (let i=0; i<CTPNotes.length; i++)
+        drawNote(CTPNotes[i], i, true)
+    ctx.strokeStyle = "rgb(255, 0, 0)"
+    ctx.strokeRect(135 + 100 * index, 0, 30, 200)
 }
 
 // TODO: ho modificato questo
