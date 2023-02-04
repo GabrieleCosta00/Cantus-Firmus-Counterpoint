@@ -405,14 +405,14 @@ function newPossibilities(offset) {
                 climaxReached = false
             }
             else {
-                if ((zenith < 9 && i > CFNotes[indexCF - 1] - 1) || (nadir > -1 && i < CFNotes[indexCF - 1] - 1)) {
-                    if (!pianoKey.classList.contains("notPossible"))
-                        pianoKey.classList.add("notPossible")
-                }
                 if (indexCF === 7) {
                     if (i !== (CFNotes[6] - 3)) {
                         pianoKey.classList.add("notPossible")
                     } // L'ultima nota può essere solo la tonica
+                }
+                else if ((zenith < 9 && i > CFNotes[indexCF - 1] - 1) || (nadir > -1 && i < CFNotes[indexCF - 1] - 1)) {
+                    if (!pianoKey.classList.contains("notPossible"))
+                        pianoKey.classList.add("notPossible")
                 }
                 else {
                     if (indexCF === 6) {
