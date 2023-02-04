@@ -113,11 +113,7 @@ function selectCF() {
     newPossibilities(CFNotes[indexCF - 1] - 1)
 }
 
-// If you click on the CF box you will write this score. Same for the CTP
-CFScore.addEventListener("click", () => {
-    selectCF()
-})
-CTPScore.addEventListener("click", () => {
+function selectCTP() {
     if (CFNotes[0] !== 0) {
         if (CFScore.classList.contains('selectedScore')) {
             CFScore.classList.remove('selectedScore')
@@ -133,6 +129,14 @@ CTPScore.addEventListener("click", () => {
         alert("Start from the Cantus Firmus to decide a tonality first!")
         selectCF()
     }
+}
+
+// If you click on the CF box you will write this score. Same for the CTP
+CFScore.addEventListener("click", () => {
+    selectCF()
+})
+CTPScore.addEventListener("click", () => {
+    selectCTP()
 })
 
 // If you are over the CF/CTP box the flag "whichScorePt" is set to "CF"/"CTP". Used for colour the key with the corresponding colour
@@ -367,11 +371,17 @@ function clearPossibilities() {
         pianoKey.classList.remove("notPossible")
     })
 }
-
+/*
+// Flag to find a climax.
+let climaxReached = false
+let climaxIndex = null
+let zenithOrNadir = "zenith"
+*/
 // Here goes the rules for the choise of the next note (it add a colour)
 function newPossibilities(offset) {
     // Flag to signal if it's impossible to write a CTP to the CF without breaking the rules
     let existsPossibleCTPNote = false
+
     pianoKeys.forEach((pianoKey, i) => {
         // Here goes the conditions for NOT good notes
         // TODO: Regolamentare il climax (almeno sulla quarta nota suonata)
@@ -380,7 +390,31 @@ function newPossibilities(offset) {
             if (indexCF === 8) {
                 clearTonalityMask();
                 clearPossibilities();
+            }/*
+            // Climax
+            if (!climaxReached && indexCF >= 4) {
+                // If there was a change of direction...
+                if (Math.sign(CFNotes[indexCF - 3] - CFNotes[indexCF - 2]) !== Math.sign(CFNotes[indexCF - 2] - CFNotes[indexCF - 1])) {
+                    climaxReached = true
+                    climaxIndex = indexCF - 1
+                    if (Math.sign(CFNotes[indexCF - 2] - CFNotes[indexCF - 1]) === Math.sign(-1))
+                        zenithOrNadir = "nadir"
+                }
             }
+            if (climaxReached && indexCF >= 4) {
+                if (zenithOrNadir === "zenith") {
+                    if (i >= CFNotes[climaxIndex - 1]) {
+                        if (!pianoKey.classList.contains("notPossible"))
+                            pianoKey.classList.add("notPossible")
+                    }
+                }
+                if (zenithOrNadir === "nadir") {
+                    if (i <= CFNotes[climaxIndex - 1]) {
+                        if (!pianoKey.classList.contains("notPossible"))
+                            pianoKey.classList.add("notPossible")
+                    }
+                }
+            }*/
             else {
                 if (indexCF === 6) {
                     if ((i !== (CFNotes[0] + 1)) && (i !== ((CFNotes[0] + 13) % 36)) && (i !== ((CFNotes[0] + 25) % 36))) {
@@ -474,8 +508,10 @@ function newPossibilities(offset) {
                 if (!pianoKey.classList.contains("notPossible"))
                     pianoKey.classList.add("notPossible")
             }
-            if (indexCTP >= 8)
+            if (indexCTP >= 8) {
                 indexCTP = 0
+                selectCF()
+            }
             if (indexCTP === 0) {
                 if (((CFNotes[0] - 1) !== i) && ((CFNotes[0] + 6) !== i) && //unison e fifth above
                     ((CFNotes[0] - 13) !== i) && ((CFNotes[0] + 30) !== i) && //eighth below and last fifth above
@@ -608,8 +644,13 @@ function newPossibilities(offset) {
         if (!pianoKey.classList.contains("notPossible"))
             existsPossibleCTPNote = true
     })
-    if (whichScore === "CTP" && !existsPossibleCTPNote)
+    if (whichScore === "CTP" && !existsPossibleCTPNote) {
         alert("It's impossible to write a CTP to this CF without breaking the rules.")
+        indexCTP = 0
+        clearScore()
+        clearStaves()
+        selectCTP()
+    }
 }
 
 // It writes the note you played in the CF/CTP tabs + pentagramma
@@ -643,12 +684,7 @@ function playing() {
     if (currentTransport === 8) {
         // currentTransport = 0;
         ctx.fillStyle = "rgb(0, 0, 0)"
-        ctx.clearRect(0, 0, 1015, 200)
-        drawStaves()
-        for (let i=0; i<CFNotes.length; i++)
-            drawNote(CFNotes[i], i,false)
-        for (let i=0; i<CTPNotes.length; i++)
-            drawNote(CTPNotes[i], i,true)
+        clearStaves()
         transportStop();
     }
     else {
@@ -807,12 +843,7 @@ function drawSharp(x, y, ctp) {
 
 // The function that draws the red rectangle on the score
 function drawPositionOnScore(index) {
-    ctx.clearRect(0, 0, 1015, 200)
-    drawStaves()
-    for (let i=0; i<CFNotes.length; i++)
-        drawNote(CFNotes[i], i, false)
-    for (let i=0; i<CTPNotes.length; i++)
-        drawNote(CTPNotes[i], i, true)
+    clearStaves()
     ctx.strokeStyle = "rgb(255,0,0)"
     // ctx.strokeRect(135 + 100 * index, 0, 30, 200)
     ctx.beginPath()
@@ -822,4 +853,13 @@ function drawPositionOnScore(index) {
     ctx.arc(135 + 100 * index, 188, 10, Math.PI/2, Math.PI)
     ctx.lineTo(135 + 100 * index - 10, 12)
     ctx.stroke()
+}
+
+function clearStaves() {
+    ctx.clearRect(0, 0, 1015, 200)
+    drawStaves()
+    for (let i=0; i<CFNotes.length; i++)
+        drawNote(CFNotes[i], i, false)
+    for (let i=0; i<CTPNotes.length; i++)
+        drawNote(CTPNotes[i], i, true)
 }
