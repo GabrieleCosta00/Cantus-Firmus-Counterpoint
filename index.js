@@ -17,6 +17,10 @@ let tonalityMask = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
 const noteNames = [ 'C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'G#3', 'A3', 'A#3', 'B3',
     'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4',
     'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5', 'A#5', 'B5'];
+// Flag to find a climax.
+let zenith = 9;
+let nadir = -1;
+let climaxReached = false;
 
 let currentAudio = [];
 function preloader() {
@@ -371,12 +375,7 @@ function clearPossibilities() {
         pianoKey.classList.remove("notPossible")
     })
 }
-/*
-// Flag to find a climax.
-let climaxReached = false
-let climaxIndex = null
-let zenithOrNadir = "zenith"
-*/
+
 // Here goes the rules for the choise of the next note (it add a colour)
 function newPossibilities(offset) {
     // Flag to signal if it's impossible to write a CTP to the CF without breaking the rules
@@ -387,46 +386,40 @@ function newPossibilities(offset) {
         // TODO: Regolamentare il climax (almeno sulla quarta nota suonata)
         // TODO: Farlo suonare decentemente
         if (whichScore === "CF") {  // Here the CF's conditions
-            if (indexCF === 8) {
-                clearTonalityMask();
-                clearPossibilities();
-            }/*
             // Climax
             if (!climaxReached && indexCF >= 4) {
                 // If there was a change of direction...
                 if (Math.sign(CFNotes[indexCF - 3] - CFNotes[indexCF - 2]) !== Math.sign(CFNotes[indexCF - 2] - CFNotes[indexCF - 1])) {
                     climaxReached = true
-                    climaxIndex = indexCF - 1
                     if (Math.sign(CFNotes[indexCF - 2] - CFNotes[indexCF - 1]) === Math.sign(-1))
-                        zenithOrNadir = "nadir"
+                        nadir = indexCF - 2
+                    else
+                        zenith = indexCF - 2
                 }
             }
-            if (climaxReached && indexCF >= 4) {
-                if (zenithOrNadir === "zenith") {
-                    if (i >= CFNotes[climaxIndex - 1]) {
-                        if (!pianoKey.classList.contains("notPossible"))
-                            pianoKey.classList.add("notPossible")
-                    }
-                }
-                if (zenithOrNadir === "nadir") {
-                    if (i <= CFNotes[climaxIndex - 1]) {
-                        if (!pianoKey.classList.contains("notPossible"))
-                            pianoKey.classList.add("notPossible")
-                    }
-                }
-            }*/
+            if (indexCF === 8) {
+                clearTonalityMask();
+                clearPossibilities();
+                zenith = 9
+                nadir = -1
+                climaxReached = false
+            }
             else {
-                if (indexCF === 6) {
-                    if ((i !== (CFNotes[0] + 1)) && (i !== ((CFNotes[0] + 13) % 36)) && (i !== ((CFNotes[0] + 25) % 36))) {
+                if ((zenith < 9 && i > CFNotes[indexCF - 1] - 1) || (nadir > -1 && i < CFNotes[indexCF - 1] - 1)) {
+                    if (!pianoKey.classList.contains("notPossible"))
                         pianoKey.classList.add("notPossible")
-                    } // La penultima nota può essere solo il secondo grado
-                    if (i === 0 || i === 1) {pianoKey.classList.add("notPossible")} // Non posso concludere scendendo se sono già a fondo tastiera
+                }
+                if (indexCF === 7) {
+                    if (i !== (CFNotes[6] - 3)) {
+                        pianoKey.classList.add("notPossible")
+                    } // L'ultima nota può essere solo la tonica
                 }
                 else {
-                    if (indexCF === 7) {
-                        if (i !== (CFNotes[6] - 3)) {
+                    if (indexCF === 6) {
+                        if ((i !== (CFNotes[0] + 1)) && (i !== ((CFNotes[0] + 13) % 36)) && (i !== ((CFNotes[0] + 25) % 36))) {
                             pianoKey.classList.add("notPossible")
-                        } // L'ultima nota può essere solo la tonica
+                        } // La penultima nota può essere solo il secondo grado
+                        if (i === 0 || i === 1) {pianoKey.classList.add("notPossible")} // Non posso concludere scendendo se sono già a fondo tastiera
                     }
                     else {
                         if (Math.abs(Number(offset) - i) > 12 ||  // Salti non più larghi di un'ottava
