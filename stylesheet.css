@@ -1,0 +1,202 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    align-items: center;
+    background-color: darkgrey;
+}
+
+#preloader {
+    text-align: center;
+    padding-top: 65%;
+    background: white url("images/loader.gif") no-repeat center center;
+    box-shadow: inset 0 -600px 600px rgb(0 0 0 / 20%), inset -500px 0 500px rgb(0 0 0 / 20%), inset 0 600px 600px rgb(0 0 0 / 20%), inset 500px 0 500px rgb(0 0 0 / 20%);
+    background-size: 20%;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 20;
+}
+
+.Text {
+    text-justify: distribute;
+    text-align: center;
+    padding:  15px 0 5px 0;
+    text-shadow: 0 0 30px white;
+}
+
+#box {
+    height: 650px;
+    padding: 20px 20px 20px 20px;
+    background-color: rgba(136, 97, 66, 0.53);
+    border-radius: 10px;
+    justify-items: center;
+    box-shadow: 0 0 20px black, inset 0 -500px 500px rgb(0 0 0 / 15%), inset 0 200px 200px rgb(255 255 255 / 20%);
+    display: block;
+
+}
+
+#scoreCF {
+    width: 1070px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: coral;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+    padding-top: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 0 40px rgba(65, 48, 32, 0.53);
+    transition: border 50ms linear;
+}
+
+#scoreCTP {
+    width: 1070px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #f1dc8f;
+    text-align: center;
+    padding-top: 10px;
+    justify-content: center;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    box-shadow: 0 0 40px rgba(65, 48, 32, 0.53);
+    transition: border 50ms linear;
+}
+
+.spartito {
+    background-color: #e0ccbd;
+    text-align: center;
+    padding-top: 33px;
+    border-radius: 10px;
+    width: 1070px;
+    height: 60px;
+}
+
+.noteText {
+    padding-left: 55px;
+    padding-right: 55px;
+    cursor: pointer;
+}
+
+#pianoKeys {
+    padding-top: 25px;
+}
+
+.keys {
+    position: relative;
+    display: flex;
+}
+
+.key {
+    width: 51px;
+    height: 190px;
+    position: relative;
+    background-color: #fff;
+    border-radius: 0 0 5px 5px;
+    border: solid #000 2px;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 160px;
+    /*box-shadow: 0 5px #595959;*/
+    box-shadow: inset 0 -5px 5px rgb(0 0 0 / 50%), inset 0 20px 20px rgb(255 255 255 / 10%);
+    transition: background-color 80ms linear;
+}
+
+.black-key {
+    width: 29px;
+    height: 108px;
+    position: absolute;
+    background-color: #000;
+    border-radius: 0 0 5px 5px;
+    z-index: 9;
+    text-align: center;
+    color: white;
+    padding-top: 80px;
+    /*box-shadow: 0 5px #363636;*/
+    box-shadow: inset 0 -5px 5px rgb(255 255 255/ 20%), inset 0 20px 20px rgb(255 255 255 / 10%);
+
+}
+
+.notPossible {
+    background-color: #801414;
+}
+
+.outOfTonality {
+    /*background-color: #770000;*/
+}
+
+.writtenOnCFScore {
+    background-color: #ff7f50;
+}
+
+.writtenOnCTPScore {
+    background-color: #f1dc8f;
+}
+
+.writtenOnScore {
+    background-color: #46bd5f;
+}
+
+.selectedScore {
+    border: solid #000 2px;
+}
+
+#transport {
+    display: flex;
+    margin: 25px 0 25px 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.transportButton {
+    margin: 0 10px 0 10px;
+    border: solid black 2px;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 10px;
+    box-shadow: inset 0 -5px 5px rgb(0 0 0 / 30%), inset 0 5px 5px rgb(255 255 255 / 30%);
+    transition: background-color 80ms linear;
+}
+
+.play {
+    background-color: mediumseagreen;
+}
+
+.stop {
+    background-color: #c42e2e;
+}
+
+.reset {
+    background-color: #af7a36;
+}
+
+.playSelected {
+    background-color: #09b04c;
+}
+
+.stopSelected {
+    background-color: #d90000;
+}
+
+.resetSelected {
+    background-color: #d58100;
+}
+
+.keyIsPlayingWhite {
+    background-color: #b7b7b7;
+    /*box-shadow: 0 1px #595959;
+    height: 192px;*/
+}
+
+.keyIsPlayingBlack {
+    background-color: #494949;
+    /*box-shadow: 0 1px #363636;
+    height: 110px;*/
+}

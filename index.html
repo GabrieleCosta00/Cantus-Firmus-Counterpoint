@@ -2,9 +2,91 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Piano</title>
+    <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
-
+<div id="preloader">Loading the files... please wait</div>
+<img src="images/Chiave_di_violino.png" alt="Chiave di violino" width="25px" height="70px"
+     style="position: relative; top: -84px; left: 180px;">
+<img src="images/Chiave_di_basso.png" alt="Chiave di basso" width="35px" height="45px"
+     style="position: relative; top: 6px; left: 150px;">
+<div id="box">
+    <div class="Text">CANTUS FIRMUS</div>
+    <div id="scoreCF" class="selectedScore">
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+    </div>
+    <!--<div class="spartito">Spartito CF</div>-->
+    <div class="Text">COUNTERPOINT</div>
+    <div id="scoreCTP">
+        <div id="instructionsCTP">Please click here to write the counterpoint</div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+        <div class="noteText"></div>
+    </div>
+    <!--<div class="spartito">Spartito CTP</div>-->
+    <canvas id="canvas_score"
+            width="1015" height="200"
+            style="position: relative; left: 80px; top: 10px;">
+    </canvas>
+    <div id="pianoKeys" class="keys">
+        <div class="key white-key">z</div>
+        <div class="key black-key">s</div>
+        <div class="key white-key">x</div>
+        <div class="key black-key">d</div>
+        <div class="key white-key">c</div>
+        <div class="key white-key">v</div>
+        <div class="key black-key">g</div>
+        <div class="key white-key">b</div>
+        <div class="key black-key">h</div>
+        <div class="key white-key">n</div>
+        <div class="key black-key">j</div>
+        <div class="key white-key">m</div>
+        <div class="key white-key">,</div>
+        <div class="key black-key">l</div>
+        <div class="key white-key">.</div>
+        <div class="key black-key">ò</div>
+        <div class="key white-key">-</div>
+        <div class="key white-key">q</div>
+        <div class="key black-key">2</div>
+        <div class="key white-key">w</div>
+        <div class="key black-key">3</div>
+        <div class="key white-key">e</div>
+        <div class="key black-key">4</div>
+        <div class="key white-key">r</div>
+        <div class="key white-key">t</div>
+        <div class="key black-key">6</div>
+        <div class="key white-key">y</div>
+        <div class="key black-key">7</div>
+        <div class="key white-key">u</div>
+        <div class="key white-key">i</div>
+        <div class="key black-key">9</div>
+        <div class="key white-key">o</div>
+        <div class="key black-key">0</div>
+        <div class="key white-key">p</div>
+        <div class="key black-key">'</div>
+        <div class="key white-key">è</div>
+        <!--            <div class="key white-key">+</div>  -->
+    </div>
+    <div id="transport">
+        <div class="play transportButton" onclick="transportPlay()">PLAY</div>
+        <div class="stop transportButton" onclick="transportStop()">STOP</div>
+        <div class="reset transportButton" onclick="resetTonality()">RESET</div>
+    </div>
+</div>
+<script src="http://unpkg.com/tone"></script>
+<script src="index.js"></script>
 </body>
 </html>
