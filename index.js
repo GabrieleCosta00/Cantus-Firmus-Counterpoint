@@ -114,7 +114,8 @@ function selectCF() {
     whichScore = "CF";
     if (!CFScore.classList.contains('selectedScore')) {CFScore.classList.add('selectedScore')}
     clearPossibilities()
-    newPossibilities(CFNotes[indexCF - 1] - 1)
+    if (!isNaN(CFNotes[indexCF - 1] - 1))
+        newPossibilities(CFNotes[indexCF - 1] - 1)
 }
 
 function selectCTP() {
