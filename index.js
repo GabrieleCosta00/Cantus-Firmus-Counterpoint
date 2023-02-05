@@ -248,23 +248,25 @@ function playWriteClearPoss(number) {
                 clearTonalityMask();
                 setTonalityMask(Number(number) - 1, 0); // Means ("this note index", "is the root (= 0)")
             }
-            if (((((Number(number) - CFNotes[0]) % 12) === 3) || (((CFNotes[0] - Number(number)) % 12) === 9)) && (tonalityMask[(CFNotes[0] + 2) % 36] !== 0)) {
-                setTonalityMask(Number(number) - 1, 3); // Means ("this note index", "is the minor 3rd") so it's a minor scale
-            }
-            if (((((Number(number) - CFNotes[0]) % 12) === 4) || (((CFNotes[0] - Number(number)) % 12) === 8)) && (tonalityMask[(CFNotes[0] + 3) % 36] !== 0)) {
-                setTonalityMask(Number(number) - 1, 4); // Means ("this note index", "is the major 3rd") so it's a major scale
-            }
-            if (((((Number(number) - CFNotes[0]) % 12) === 8) || (((CFNotes[0] - Number(number)) % 12) === 4)) && (tonalityMask[(CFNotes[0] + 7) % 36] !== 0)) {
-                setTonalityMask(Number(number) - 1, 8); // Means ("this note index", "is the minor 6th") so it's a minor scale
-            }
-            if (((((Number(number) - CFNotes[0]) % 12) === 9) || (((CFNotes[0] - Number(number)) % 12) === 3)) && (tonalityMask[(CFNotes[0] + 8) % 36] !== 0)) {
-                setTonalityMask(Number(number) - 1, 9); // Means ("this note index", "is the major 6th") so it's a major scale
-            }
-            if (((((Number(number) - CFNotes[0]) % 12) === 10) || (((CFNotes[0] - Number(number)) % 12) === 2)) && (tonalityMask[(CFNotes[0] + 9) % 36] !== 0)) {
-                setTonalityMask(Number(number) - 1, 10); // Means ("this note index", "is the minor 7th") so it's a minor scale
-            }
-            if (((((Number(number) - CFNotes[0]) % 12) === 11) || (((CFNotes[0] - Number(number)) % 12) === 1)) && (tonalityMask[(CFNotes[0] + 10) % 36] !== 0)) {
-                setTonalityMask(Number(number) - 1, 11); // Means ("this note index", "is the major 7th") so it's a major scale
+            else {
+                if (((((Number(number) - CFNotes[0]) % 12) === 3) || (((CFNotes[0] - Number(number)) % 12) === 9)) && (tonalityMask[(CFNotes[0] + 2) % 36] !== 0)) {
+                    setTonalityMask(Number(number) - 1, 3); // Means ("this note index", "is the minor 3rd") so it's a minor scale
+                }
+                if (((((Number(number) - CFNotes[0]) % 12) === 4) || (((CFNotes[0] - Number(number)) % 12) === 8)) && (tonalityMask[(CFNotes[0] + 3) % 36] !== 0)) {
+                    setTonalityMask(Number(number) - 1, 4); // Means ("this note index", "is the major 3rd") so it's a major scale
+                }
+                if (((((Number(number) - CFNotes[0]) % 12) === 8) || (((CFNotes[0] - Number(number)) % 12) === 4)) && (tonalityMask[(CFNotes[0] + 7) % 36] !== 0)) {
+                    setTonalityMask(Number(number) - 1, 8); // Means ("this note index", "is the minor 6th") so it's a minor scale
+                }
+                if (((((Number(number) - CFNotes[0]) % 12) === 9) || (((CFNotes[0] - Number(number)) % 12) === 3)) && (tonalityMask[(CFNotes[0] + 8) % 36] !== 0)) {
+                    setTonalityMask(Number(number) - 1, 9); // Means ("this note index", "is the major 6th") so it's a major scale
+                }
+                if (((((Number(number) - CFNotes[0]) % 12) === 10) || (((CFNotes[0] - Number(number)) % 12) === 2)) && (tonalityMask[(CFNotes[0] + 9) % 36] !== 0)) {
+                    setTonalityMask(Number(number) - 1, 10); // Means ("this note index", "is the minor 7th") so it's a minor scale
+                }
+                if (((((Number(number) - CFNotes[0]) % 12) === 11) || (((CFNotes[0] - Number(number)) % 12) === 1)) && (tonalityMask[(CFNotes[0] + 10) % 36] !== 0)) {
+                    setTonalityMask(Number(number) - 1, 11); // Means ("this note index", "is the major 7th") so it's a major scale
+                }
             }
             writeNote(number, noteNames[Number(number) - 1], indexCF, (whichScore !== "CF"));
             CFNotes[indexCF] = Number(number);
@@ -383,8 +385,6 @@ function newPossibilities(offset) {
 
     pianoKeys.forEach((pianoKey, i) => {
         // Here goes the conditions for NOT good notes
-        // TODO: Regolamentare il climax (almeno sulla quarta nota suonata)
-        // TODO: Farlo suonare decentemente
         if (whichScore === "CF") {  // Here the CF's conditions
             // Climax
             if (!climaxReached && indexCF >= 4) {
@@ -714,10 +714,13 @@ function resetTonality() {
     document.querySelector('.reset').classList.add("resetSelected")
     setTimeout(() => {document.querySelector('.reset').classList.remove("resetSelected")}, 500)
     selectCF()
-    clearTonalityMask()
     clearScore()
+    clearTonalityMask()
     indexCTP = 0
     indexCF = 0
+    zenith = 9
+    nadir = -1
+    climaxReached = false
     clearPossibilities()
     ctx.fillStyle = "rgb(0, 0, 0)"
     ctx.clearRect(0, 0, 1015, 200)
@@ -856,3 +859,20 @@ function clearStaves() {
     for (let i=0; i<CTPNotes.length; i++)
         drawNote(CTPNotes[i], i, true)
 }
+
+// The function that displays the instruction for the CTP
+document.addEventListener("click", () => {
+    let emptyCTP = 1; // Flag, 1 -> CTP empty, 0 -> some note in the CTP
+    for (let i = 0; i < CTPNotes.length; i++) {
+        if (CTPNotes[i] !== 0)
+            emptyCTP = 0;
+    }
+    if (emptyCTP === 1 && whichScore === "CF") {
+        document.getElementById('scoreCTP').style.display = null
+        document.getElementById('instructionsCTP').style.display = 'content'
+    }
+    else {
+        document.getElementById('instructionsCTP').style.display = 'none'
+        document.getElementById('scoreCTP').style.display = 'flex'
+    }
+})

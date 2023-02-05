@@ -45,8 +45,8 @@ body {
     background-color: coral;
     display: flex;
     justify-content: center;
-    align-items: center;
     margin-bottom: 5px;
+    padding-top: 10px;
     box-sizing: border-box;
     box-shadow: 0 0 40px rgba(65, 48, 32, 0.53);
     transition: border 50ms linear;
@@ -57,9 +57,9 @@ body {
     height: 40px;
     border-radius: 10px;
     background-color: #f1dc8f;
-    display: flex;
+    text-align: center;
+    padding-top: 10px;
     justify-content: center;
-    align-items: center;
     margin-bottom: 5px;
     box-sizing: border-box;
     box-shadow: 0 0 40px rgba(65, 48, 32, 0.53);
@@ -76,7 +76,8 @@ body {
 }
 
 .noteText {
-    padding: 0 55px 0 55px;
+    padding-left: 55px;
+    padding-right: 55px;
     cursor: pointer;
 }
 
