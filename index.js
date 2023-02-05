@@ -381,8 +381,9 @@ function clearPossibilities() {
 
 // Here goes the rules for the choise of the next note (it add a colour)
 function newPossibilities(offset) {
-    // Flag to signal if it's impossible to write a CTP to the CF without breaking the rules
+    // Flag to signal if it's impossible to write a CTP to the CF or a CF without breaking the rules
     let existsPossibleCTPNote = false
+    let existsPossibleCFNote = false
 
     pianoKeys.forEach((pianoKey, i) => {
         // Here goes the conditions for NOT good notes
@@ -635,7 +636,9 @@ function newPossibilities(offset) {
                 }
             }
         }
-        if (!pianoKey.classList.contains("notPossible"))
+        if (!pianoKey.classList.contains("notPossible") && whichScore === "CF")
+            existsPossibleCFNote = true
+        if (!pianoKey.classList.contains("notPossible") && whichScore === "CTP")
             existsPossibleCTPNote = true
     })
     if (whichScore === "CTP" && !existsPossibleCTPNote) {
@@ -644,6 +647,18 @@ function newPossibilities(offset) {
         clearScore()
         clearStaves()
         selectCTP()
+    }
+    if (whichScore === "CF" && !existsPossibleCFNote) {
+        alert("It's impossible to write a CF without breaking the rules.")
+        indexCTP = 0
+        indexCF = 0
+        zenith = 9
+        nadir = -1
+        climaxReached = false
+        clearScore()
+        clearStaves()
+        clearPossibilities()
+        selectCF()
     }
 }
 
