@@ -611,12 +611,12 @@ function newPossibilities(offset) {
                     // This is the case for the fifth.
                     if (Math.abs(CFNotes[indexCTP] - i - 1) % 12 === 7) {
                         if (Math.sign(CFNotes[indexCTP - 1] - CFNotes[indexCTP]) === Math.sign(CTPNotes[indexCTP - 1] - i - 1)) {
-                            if (Math.abs(CFNotes[indexCTP - 1] - CFNotes[indexCTP]) !== 1) {
-                                if (Math.abs(CFNotes[indexCTP - 1] - CTPNotes[indexCTP - 1]) % 12 !== 3 &&
-                                    Math.abs(CFNotes[indexCTP - 1] - CTPNotes[indexCTP - 1]) % 12 !== 4) {
-                                    if (!pianoKey.classList.contains("notPossible"))
-                                        pianoKey.classList.add("notPossible")
-                                }
+                            if ((Math.abs(CFNotes[indexCTP - 1] - CFNotes[indexCTP]) !== 1 &&
+                                Math.abs(CFNotes[indexCTP - 1] - CFNotes[indexCTP]) !== 2) ||
+                                (Math.abs(CFNotes[indexCTP - 1] - CTPNotes[indexCTP - 1]) % 12 !== 3 &&
+                                Math.abs(CFNotes[indexCTP - 1] - CTPNotes[indexCTP - 1]) % 12 !== 4)) {
+                                if (!pianoKey.classList.contains("notPossible"))
+                                    pianoKey.classList.add("notPossible")
                             }
                         }
                     }
@@ -625,11 +625,11 @@ function newPossibilities(offset) {
                     // This is the case for the octave.
                     if (Math.abs(CFNotes[indexCTP] - i - 1) % 12 === 0) {
                         if (Math.sign(CFNotes[indexCTP - 1] - CFNotes[indexCTP]) === Math.sign(CTPNotes[indexCTP - 1] - i - 1)) {
-                            if (Math.abs(CFNotes[indexCTP - 1] - CFNotes[indexCTP]) !== 1) {
-                                if (Math.abs(CFNotes[indexCTP - 1] - CTPNotes[indexCTP - 1]) % 12 !== 7) {
+                            if ((Math.abs(CFNotes[indexCTP - 1] - CFNotes[indexCTP]) !== 1 &&
+                                Math.abs(CFNotes[indexCTP - 1] - CFNotes[indexCTP]) !== 2) ||
+                                (Math.abs(CFNotes[indexCTP - 1] - CTPNotes[indexCTP - 1]) % 12 !== 7)) {
                                     if (!pianoKey.classList.contains("notPossible"))
                                         pianoKey.classList.add("notPossible")
-                                }
                             }
                         }
                     }
