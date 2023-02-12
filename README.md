@@ -36,6 +36,7 @@ note are wrong for the following step. We'll be able to play only the right note
 in red and made impossible to be pressed.
 
 Here the link to the [GitHub](https://github.com/GabrieleCosta00/ACTAM_Project_2023) repository.
+And this is the [link](https://gabrielecosta00.github.io/Cantus-Firmus-Counterpoint/) to the web app.
 
 https://user-images.githubusercontent.com/115801063/218269557-0a6ec3e6-4709-45c6-ae0f-ffbf8bd59da7.mp4
 
